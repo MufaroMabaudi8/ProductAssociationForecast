@@ -5,7 +5,7 @@ port = 5000
 
 [theme]
 primaryColor = "#8A54FD"
-backgroundColor = "#0E1117"
-secondaryBackgroundColor = "#1E2130"
-textColor = "#F0F2F6"
-font = "sans serif"
+backgroundColor = "#0D0F18"
+secondaryBackgroundColor = "#161A2B"
+textColor = "#FFFFFF"
+font = "monospace"

@@ -28,119 +28,232 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for enhanced UI
+# Custom CSS for enhanced UI with futuristic minimal design
 st.markdown("""
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+    
+    * {
+        font-family: 'Space Mono', monospace;
+    }
+    
     .main .block-container {
         padding-top: 2rem;
         padding-bottom: 2rem;
-        max-width: 95%;
+        max-width: 98%;
     }
+    
     h1, h2, h3 {
-        letter-spacing: 1px;
-        font-weight: 600;
+        letter-spacing: 2px;
+        font-weight: 700;
+        text-transform: uppercase;
     }
+    
+    h1 {
+        font-size: 2.2rem !important;
+        background: linear-gradient(90deg, #8A54FD, #A17AFD);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 2rem !important;
+    }
+    
+    h2 {
+        font-size: 1.5rem !important;
+        color: #8A54FD !important;
+    }
+    
+    h3 {
+        font-size: 1.2rem !important;
+        color: rgba(138, 84, 253, 0.9) !important;
+    }
+    
+    /* Button styling for futuristic look */
     .stButton>button {
+        background-color: rgba(138, 84, 253, 0.1);
+        color: #8A54FD;
+        border-radius: 4px;
+        padding: 0.7rem 1.5rem;
+        font-weight: 600;
+        border: 1px solid #8A54FD;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 10px rgba(138, 84, 253, 0.2);
+        transition: all 0.25s ease;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+    
+    .stButton>button:hover {
         background-color: #8A54FD;
         color: white;
-        border-radius: 8px;
-        padding: 0.6rem 1.2rem;
-        font-weight: 500;
-        border: none;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-    }
-    .stButton>button:hover {
-        background-color: #A17AFD;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 20px rgba(138, 84, 253, 0.4);
         transform: translateY(-2px);
     }
-    .css-145kmo2 {
-        font-size: 1.1rem;
-    }
-    .css-18e3th9 {
-        padding-top: 1rem;
-    }
+    
+    /* Alert styling */
     .stAlert {
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        border: none !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
+    
+    /* DataFrame styling */
     .stDataFrame {
-        border-radius: 10px;
+        border-radius: 4px;
         overflow: hidden;
-        border: 1px solid rgba(138, 84, 253, 0.2);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .css-1r6slb0 .css-1ht1j8u {
-        background-color: rgba(138, 84, 253, 0.1);
-    }
-    /* Sidebar styling */
-    .css-1d391kg {
-        background-color: #151B28;
-        border-right: 1px solid rgba(138, 84, 253, 0.1);
-    }
-    /* Metrics styling */
-    .css-1xarl3l {
-        background-color: #1E2130;
-        padding: 1rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         border: 1px solid rgba(138, 84, 253, 0.1);
     }
-    /* Slider styling */
-    .stSlider {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
+    
+    /* Sidebar styling */
+    .css-1d391kg, [data-testid="stSidebar"] {
+        background-color: #0A0C14 !important;
+        border-right: 1px solid rgba(138, 84, 253, 0.1);
     }
-    .stSlider > div > div {
-        background-color: rgba(138, 84, 253, 0.2);
+    
+    /* Metrics styling for futuristic look */
+    .css-1xarl3l, [data-testid="stMetric"] {
+        background-color: #161A2B;
+        padding: 1rem;
+        border-radius: 4px;
+        border: 1px solid rgba(138, 84, 253, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     }
-    /* Select box styling */
-    .stSelectbox > div > div {
-        background-color: #1E2130;
-        border: 1px solid rgba(138, 84, 253, 0.2);
-        border-radius: 8px;
+    
+    /* Input elements styling */
+    .stSlider, .stSelectbox, .stFileUploader, .stMultiSelect, .stNumberInput {
+        padding: 0.5rem 0;
     }
-    /* File uploader styling */
-    .stFileUploader > div {
-        background-color: #1E2130;
-        border: 1px dashed rgba(138, 84, 253, 0.5);
-        border-radius: 10px;
-        padding: 0.5rem;
+    
+    .stSlider > div > div, .stSelectbox > div > div, .stMultiSelect > div > div, .stNumberInput > div > div {
+        background-color: #161A2B !important;
+        border: 1px solid rgba(138, 84, 253, 0.2) !important;
+        border-radius: 4px !important;
     }
-    /* Multiselect styling */
-    .stMultiSelect > div > div {
-        background-color: #1E2130;
-        border: 1px solid rgba(138, 84, 253, 0.2);
-        border-radius: 8px;
-    }
+    
     /* Chart styling */
     .js-plotly-plot {
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        background-color: rgba(30, 33, 48, 0.7);
+        border-radius: 4px;
+        background-color: rgba(22, 26, 43, 0.8);
         padding: 1rem;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
+        margin: 1rem 0;
+        border: 1px solid rgba(138, 84, 253, 0.1);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     }
-    /* Add glow effect on hover to cards */
-    [data-testid="stVerticalBlock"] > div:hover {
-        box-shadow: 0 0 15px rgba(138, 84, 253, 0.3);
-        transition: box-shadow 0.3s ease;
+    
+    /* Card effect */
+    .card {
+        background-color: #161A2B;
+        border-radius: 4px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(138, 84, 253, 0.1);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        box-shadow: 0 8px 24px rgba(138, 84, 253, 0.2);
+        transform: translateY(-4px);
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #0D0F18;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: rgba(138, 84, 253, 0.3);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(138, 84, 253, 0.5);
+    }
+    
+    /* File uploader */
+    .stFileUploader > div {
+        background-color: #161A2B;
+        border: 1px dashed rgba(138, 84, 253, 0.3);
+        border-radius: 4px;
+    }
+    
+    /* Progress bar */
+    .stProgress > div > div {
+        background-color: #8A54FD !important;
+    }
+    
+    /* Tooltip */
+    .stTooltipIcon {
+        color: rgba(138, 84, 253, 0.7) !important;
+    }
+    
+    /* Table */
+    .stTable {
+        border: 1px solid rgba(138, 84, 253, 0.1);
+        border-radius: 4px;
+    }
+    
+    /* Code block */
+    .stCode {
+        border-radius: 4px;
+    }
+    
+    /* Link color */
+    a {
+        color: #A17AFD !important;
+    }
+    
+    /* Section divider */
+    hr {
+        border-color: rgba(138, 84, 253, 0.1);
+        margin: 2rem 0;
+    }
+    
+    /* Custom classes */
+    .gradient-text {
+        background: linear-gradient(90deg, #8A54FD, #A17AFD);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .neon-border {
+        border: 1px solid #8A54FD;
+        box-shadow: 0 0 10px rgba(138, 84, 253, 0.5);
+    }
+    
+    .stats-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background-color: #161A2B;
+        padding: 1rem;
+        border-radius: 4px;
+        border-left: 3px solid #8A54FD;
+        flex: 1;
+        margin: 0 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 </style>
 """, unsafe_allow_html=True)
 
 # Application title and description with enhanced styling
-st.markdown("<h1 style='text-align: center; margin-bottom: 1.5rem;'>📊 Demand Forecasting Based on Product Association</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>SMART DEMAND <span class='gradient-text'>FORECASTING</span></h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.1rem; margin-bottom: 2rem; letter-spacing: 1px; opacity: 0.8;'>Advanced product association analysis and intelligent demand prediction</p>", unsafe_allow_html=True)
 
 # Styled sidebar
-st.sidebar.markdown("<h2 style='text-align: center; margin-bottom: 1.5rem; color: #8A54FD;'>Navigation</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<h2 style='text-align: center; margin-bottom: 2rem; color: #8A54FD; letter-spacing: 2px;'>NAVIGATE</h2>", unsafe_allow_html=True)
 page = st.sidebar.radio(
-    "Select Section",  # Fixed label issue
-    ["Home", "Data Upload", "Association Analysis", "Demand Forecasting", "Visualization", "Reports"],
+    "Select Section",
+    ["Home", "Data Upload", "Association Analysis", "Demand Forecasting", "Visualization"],
     label_visibility="collapsed"  # Hide label but maintain accessibility
 )
 
@@ -164,74 +277,134 @@ if "product_list" not in st.session_state:
 
 # Home page
 if page == "Home":
-        # Create a two-column layout for introductory content
-    col1, col2 = st.columns([3, 2])
+    # Create a welcome banner
+    st.markdown("""
+    <div style="background-color: rgba(138, 84, 253, 0.05); padding: 25px; border-radius: 4px; border-left: 3px solid #8A54FD; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+        <h2 style="color: #8A54FD; margin-top: 0; letter-spacing: 1.5px; text-transform: uppercase; font-size: 1.4rem;">Advanced Product Demand Analytics</h2>
+        <p style="font-size: 1rem; margin: 10px 0 0 0; line-height: 1.5;">This platform integrates product association discovery with intelligent demand forecasting to optimize inventory planning and identify cross-selling opportunities.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Dashboard layout
+    st.markdown("""
+    <h3 style="margin: 0 0 20px 0; color: #8A54FD; letter-spacing: 1.5px; text-transform: uppercase; font-size: 1.1rem;">
+        <span style="border-bottom: 2px solid #8A54FD; padding-bottom: 5px;">SYSTEM OVERVIEW</span>
+    </h3>
+    """, unsafe_allow_html=True)
+    
+    # Create a three-column layout for sample visualizations
+    col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("""
-        <div style="background-color: rgba(138, 84, 253, 0.05); padding: 20px; border-radius: 10px; border-left: 4px solid #8A54FD; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-            <h2 style="color: #8A54FD;">Welcome to the Demand Forecasting Platform</h2>
-            <p style="font-size: 1.1rem; margin-bottom: 20px;">This advanced analytics platform helps you discover product associations and forecast demand with precision based on historical sales patterns.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #8A54FD;">Core Features</h3>
-        """, unsafe_allow_html=True)
-        
-        # Feature boxes with icons
-        feature_data = [
-            ("🔗", "Product Association Analysis", "Discover which products are frequently purchased together using the Apriori algorithm"),
-            ("📈", "Demand Forecasting", "Predict future product demand with XGBoost machine learning models"),
-            ("📊", "Interactive Visualizations", "Explore associations with force-directed graphs and other visual tools"),
-            ("📁", "Downloadable Reports", "Export your analysis results for business planning")
-        ]
-        
-        for icon, title, description in feature_data:
-            st.markdown(f"""
-            <div style="background-color: rgba(30, 33, 48, 0.8); padding: 18px; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); border: 1px solid rgba(138, 84, 253, 0.1);">
-                <div style="font-size: 28px; margin-right: 18px; color: #8A54FD;">{icon}</div>
-                <div>
-                    <h4 style="margin: 0; color: #8A54FD; font-weight: 600;">{title}</h4>
-                    <p style="margin: 5px 0 0 0; font-size: 0.9rem;">{description}</p>
+        <div class="card">
+            <h4 style="color: #8A54FD; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Product Association Network</h4>
+            <div style="background-color: #161A2B; border-radius: 4px; height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; border: 1px solid rgba(138, 84, 253, 0.2);">
+                <div style="text-align: center;">
+                    <div style="opacity: 0.7; font-size: 2.5rem; margin-bottom: 10px;">🔗</div>
+                    <p style="margin: 0; opacity: 0.7; font-size: 0.8rem;">Upload data to generate product association network</p>
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            <p style="font-size: 0.85rem; margin: 0;">Interactive visualization of product associations based on purchase patterns. Nodes represent products, and edges indicate relationship strength.</p>
+        </div>
+        """, unsafe_allow_html=True)
     
     with col2:
         st.markdown("""
-        <div style="background-color: rgba(30, 33, 48, 0.8); padding: 22px; border-radius: 10px; height: 100%; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); border: 1px solid rgba(138, 84, 253, 0.1);">
-            <h3 style="color: #8A54FD; margin-bottom: 20px; font-weight: 600;">How to Use</h3>
-            <ol style="padding-left: 25px;">
-                <li style="margin-bottom: 12px; line-height: 1.4;">Upload your transaction data in CSV or Excel format</li>
-                <li style="margin-bottom: 12px; line-height: 1.4;">Run association analysis to discover product relationships</li>
-                <li style="margin-bottom: 12px; line-height: 1.4;">Generate demand forecasts based on historical patterns</li>
-                <li style="margin-bottom: 12px; line-height: 1.4;">Explore visualizations to gain insights</li>
-                <li style="margin-bottom: 12px; line-height: 1.4;">Download reports for your business planning</li>
-            </ol>
-            
-            <h3 style="color: #8A54FD; margin: 25px 0 15px 0; font-weight: 600;">Data Requirements</h3>
-            <p><strong>Required columns:</strong></p>
-            <ul style="padding-left: 25px; margin-top: 5px;">
+        <div class="card">
+            <h4 style="color: #8A54FD; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Demand Forecast Trends</h4>
+            <div style="background-color: #161A2B; border-radius: 4px; height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; border: 1px solid rgba(138, 84, 253, 0.2);">
+                <div style="text-align: center;">
+                    <div style="opacity: 0.7; font-size: 2.5rem; margin-bottom: 10px;">📈</div>
+                    <p style="margin: 0; opacity: 0.7; font-size: 0.8rem;">Upload data to generate demand forecasts</p>
+                </div>
+            </div>
+            <p style="font-size: 0.85rem; margin: 0;">Time series forecasts for product demand, considering both historical patterns and product associations for more accurate predictions.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Workflow explanation
+    st.markdown("""
+    <h3 style="margin: 30px 0 20px 0; color: #8A54FD; letter-spacing: 1.5px; text-transform: uppercase; font-size: 1.1rem;">
+        <span style="border-bottom: 2px solid #8A54FD; padding-bottom: 5px;">HOW IT WORKS</span>
+    </h3>
+    """, unsafe_allow_html=True)
+    
+    # Create workflow steps
+    steps = [
+        {
+            "icon": "📊", 
+            "title": "Data Upload", 
+            "description": "Upload transaction data containing product purchases and dates"
+        },
+        {
+            "icon": "🔗", 
+            "title": "Association Discovery", 
+            "description": "The system discovers which products are frequently purchased together using the Apriori algorithm"
+        },
+        {
+            "icon": "📈", 
+            "title": "Demand Prediction", 
+            "description": "XGBoost models predict demand for both individual products and product bundles"
+        },
+        {
+            "icon": "🔍", 
+            "title": "Visual Analysis", 
+            "description": "Explore interactive visualizations of product relationships and demand forecasts"
+        }
+    ]
+    
+    # Display steps in a horizontal layout
+    cols = st.columns(4)
+    for i, step in enumerate(steps):
+        with cols[i]:
+            st.markdown(f"""
+            <div style="background-color: rgba(30, 33, 48, 0.8); padding: 15px; border-radius: 4px; height: 160px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); border: 1px solid rgba(138, 84, 253, 0.1);">
+                <div style="font-size: 24px; color: #8A54FD; margin-bottom: 10px;">{step['icon']}</div>
+                <h4 style="margin: 0 0 10px 0; color: #8A54FD; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">{step['title']}</h4>
+                <p style="margin: 0; font-size: 0.8rem; line-height: 1.4;">{step['description']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    # Call to action
+    st.markdown("""
+    <div style="background-color: rgba(30, 33, 48, 0.8); padding: 18px; border-radius: 4px; margin-top: 30px; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); border: 1px solid rgba(138, 84, 253, 0.2);">
+        <p style="margin: 0; color: rgba(138, 84, 253, 1); font-size: 16px; font-weight: 500; letter-spacing: 1px;">⟶ START BY UPLOADING YOUR DATA IN THE DATA UPLOAD SECTION</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Data requirements
+    st.markdown("""
+    <h3 style="margin: 30px 0 20px 0; color: #8A54FD; letter-spacing: 1.5px; text-transform: uppercase; font-size: 1.1rem;">
+        <span style="border-bottom: 2px solid #8A54FD; padding-bottom: 5px;">DATA REQUIREMENTS</span>
+    </h3>
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class="card">
+            <h4 style="color: #8A54FD; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Required Columns</h4>
+            <ul style="padding-left: 25px; margin-top: 10px;">
                 <li style="margin-bottom: 8px; line-height: 1.4;"><strong style="color: rgba(138, 84, 253, 0.9);">Date</strong>: Transaction date (YYYY-MM-DD)</li>
                 <li style="margin-bottom: 8px; line-height: 1.4;"><strong style="color: rgba(138, 84, 253, 0.9);">Product ID</strong>: Unique identifier for each product</li>
                 <li style="margin-bottom: 8px; line-height: 1.4;"><strong style="color: rgba(138, 84, 253, 0.9);">Quantity</strong>: Number of items sold</li>
             </ul>
-            
-            <p><strong>Optional columns:</strong></p>
-            <ul style="padding-left: 25px; margin-top: 5px;">
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="card">
+            <h4 style="color: #8A54FD; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Optional Columns</h4>
+            <ul style="padding-left: 25px; margin-top: 10px;">
                 <li style="margin-bottom: 8px; line-height: 1.4;"><strong style="color: rgba(138, 84, 253, 0.7);">Transaction ID</strong>: Unique identifier for each transaction</li>
                 <li style="margin-bottom: 8px; line-height: 1.4;"><strong style="color: rgba(138, 84, 253, 0.7);">Product Category</strong>: Category of the product</li>
                 <li style="margin-bottom: 8px; line-height: 1.4;"><strong style="color: rgba(138, 84, 253, 0.7);">Price</strong>: Price of the product</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div style="background-color: rgba(30, 33, 48, 0.8); padding: 18px; border-radius: 10px; margin-top: 25px; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); border: 1px solid rgba(138, 84, 253, 0.2);">
-        <p style="margin: 0; color: rgba(138, 84, 253, 1); font-size: 16px; font-weight: 500;">⟶ Start by uploading your data in the 'Data Upload' section from the navigation menu</p>
-    </div>
-    """, unsafe_allow_html=True)
 
 # Data Upload page
 elif page == "Data Upload":
