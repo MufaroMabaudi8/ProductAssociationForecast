@@ -288,8 +288,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Application title and description with enhanced styling
-st.markdown("<h1 style='text-align: center;'>Demand <span class='gradient-text'>Forecast</span></h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 1rem; margin-bottom: 2rem; opacity: 0.8;'>Advanced product association analysis and demand prediction platform</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Demand Forecasting Based on <span class='gradient-text'>Product Association</span></h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1rem; margin-bottom: 2rem; opacity: 0.8;'>Advanced sales analysis and prediction platform using association rules</p>", unsafe_allow_html=True)
 
 # Styled sidebar
 st.sidebar.markdown("<h2 style='text-align: center; margin-bottom: 2rem; color: #4B56D2; font-size: 1.3rem;'>Navigation</h2>", unsafe_allow_html=True)

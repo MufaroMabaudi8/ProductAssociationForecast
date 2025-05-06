@@ -47,8 +47,10 @@ def train_forecasting_model(data, products_to_forecast, association_rules=None, 
     X = forecast_data[feature_columns]
     y = forecast_data['Quantity']
     
-    # One-hot encode ProductID
-    X = pd.get_dummies(X, columns=['ProductID'], drop_first=False)
+    # Check if ProductID is in the columns
+    if 'ProductID' in X.columns:
+        # One-hot encode ProductID
+        X = pd.get_dummies(X, columns=['ProductID'], drop_first=False)
     
     # Split data chronologically
     # Sort by date to ensure proper chronological splitting
@@ -62,8 +64,9 @@ def train_forecasting_model(data, products_to_forecast, association_rules=None, 
     X_train = train_data[feature_columns]
     y_train = train_data['Quantity']
     
-    # One-hot encode ProductID for training data
-    X_train = pd.get_dummies(X_train, columns=['ProductID'], drop_first=False)
+    # One-hot encode ProductID for training data if it exists
+    if 'ProductID' in X_train.columns:
+        X_train = pd.get_dummies(X_train, columns=['ProductID'], drop_first=False)
     
     # Train XGBoost model
     model = XGBRegressor(
