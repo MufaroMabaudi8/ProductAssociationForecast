@@ -81,8 +81,9 @@ st.markdown("<h1 style='text-align: center; margin-bottom: 1.5rem;'>📊 Demand 
 # Styled sidebar
 st.sidebar.markdown("<h2 style='text-align: center; margin-bottom: 1.5rem; color: #7C4DFF;'>Navigation</h2>", unsafe_allow_html=True)
 page = st.sidebar.radio(
-    "",  # Empty label
-    ["Home", "Data Upload", "Association Analysis", "Demand Forecasting", "Visualization", "Reports"]
+    "Select Section",  # Fixed label issue
+    ["Home", "Data Upload", "Association Analysis", "Demand Forecasting", "Visualization", "Reports"],
+    label_visibility="collapsed"  # Hide label but maintain accessibility
 )
 
 # Initialize session state for storing data and models
@@ -168,7 +169,11 @@ if page == "Home":
         </div>
         """, unsafe_allow_html=True)
     
-    st.info("Start by uploading your data in the 'Data Upload' section from the sidebar.")
+    st.markdown("""
+    <div style="background-color: rgba(37, 44, 59, 0.8); padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center;">
+        <p style="margin: 0; color: rgba(124, 77, 255, 0.9);">⟶ Start by uploading your data in the 'Data Upload' section from the navigation menu</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Data Upload page
 elif page == "Data Upload":
