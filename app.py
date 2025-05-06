@@ -28,13 +28,60 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Application title and description
-st.title("📊 Demand Forecasting Based on Product Association")
+# Custom CSS for enhanced UI
+st.markdown("""
+<style>
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    h1, h2, h3 {
+        letter-spacing: 1px;
+    }
+    .stButton>button {
+        background-color: #7C4DFF;
+        color: white;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        border: none;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    .stButton>button:hover {
+        background-color: #9575FF;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+    }
+    .css-145kmo2 {
+        font-size: 1.1rem;
+    }
+    .css-18e3th9 {
+        padding-top: 1rem;
+    }
+    .stAlert {
+        border-radius: 8px;
+    }
+    .stDataFrame {
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgba(124, 77, 255, 0.2);
+    }
+    .css-1r6slb0 .css-1ht1j8u {
+        background-color: rgba(124, 77, 255, 0.1);
+    }
+</style>
+""", unsafe_allow_html=True)
 
-# Sidebar navigation
-st.sidebar.title("Navigation")
+# Application title and description with enhanced styling
+st.markdown("<h1 style='text-align: center; margin-bottom: 1.5rem;'>📊 Demand Forecasting Based on Product Association</h1>", unsafe_allow_html=True)
+
+# Styled sidebar
+st.sidebar.markdown("<h2 style='text-align: center; margin-bottom: 1.5rem; color: #7C4DFF;'>Navigation</h2>", unsafe_allow_html=True)
 page = st.sidebar.radio(
-    "Go to",
+    "",  # Empty label
     ["Home", "Data Upload", "Association Analysis", "Demand Forecasting", "Visualization", "Reports"]
 )
 
@@ -58,39 +105,68 @@ if "product_list" not in st.session_state:
 
 # Home page
 if page == "Home":
-    st.markdown("""
-    ## Welcome to the Demand Forecasting Platform
+        # Create a two-column layout for introductory content
+    col1, col2 = st.columns([3, 2])
     
-    This application helps you analyze product associations and forecast demand based on historical sales data.
+    with col1:
+        st.markdown("""
+        <div style="background-color: rgba(124, 77, 255, 0.05); padding: 20px; border-radius: 10px; border-left: 4px solid #7C4DFF;">
+            <h2 style="color: #7C4DFF;">Welcome to the Demand Forecasting Platform</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 20px;">This advanced analytics platform helps you discover product associations and forecast demand with precision based on historical sales patterns.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #7C4DFF;">Core Features</h3>
+        """, unsafe_allow_html=True)
+        
+        # Feature boxes with icons
+        feature_data = [
+            ("🔗", "Product Association Analysis", "Discover which products are frequently purchased together using the Apriori algorithm"),
+            ("📈", "Demand Forecasting", "Predict future product demand with XGBoost machine learning models"),
+            ("📊", "Interactive Visualizations", "Explore associations with force-directed graphs and other visual tools"),
+            ("📁", "Downloadable Reports", "Export your analysis results for business planning")
+        ]
+        
+        for icon, title, description in feature_data:
+            st.markdown(f"""
+            <div style="background-color: rgba(37, 44, 59, 0.8); padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center;">
+                <div style="font-size: 24px; margin-right: 15px;">{icon}</div>
+                <div>
+                    <h4 style="margin: 0; color: #7C4DFF;">{title}</h4>
+                    <p style="margin: 5px 0 0 0; font-size: 0.9rem;">{description}</p>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
     
-    ### Core Features:
-    
-    - **Product Association Analysis**: Discover which products are frequently purchased together using the Apriori algorithm
-    - **Demand Forecasting**: Predict future product demand with XGBoost machine learning models
-    - **Interactive Visualizations**: Explore associations with force-directed graphs and other visual tools
-    - **Downloadable Reports**: Export your analysis results for business planning
-    
-    ### How to Use:
-    
-    1. Upload your transaction data in CSV or Excel format
-    2. Run association analysis to discover product relationships
-    3. Generate demand forecasts based on historical patterns
-    4. Explore visualizations to gain insights
-    5. Download reports for your business planning
-    
-    ### Data Format Requirements:
-    
-    Your data should include at least the following columns:
-    - **Date**: Transaction date (YYYY-MM-DD)
-    - **Product ID**: Unique identifier for each product
-    - **Quantity**: Number of items sold
-    
-    Other useful columns:
-    - **Transaction ID**: Unique identifier for each transaction
-    - **Product Category**: Category of the product
-    - **Price**: Price of the product
-    
-    """)
+    with col2:
+        st.markdown("""
+        <div style="background-color: rgba(37, 44, 59, 0.8); padding: 20px; border-radius: 10px; height: 100%;">
+            <h3 style="color: #7C4DFF; margin-bottom: 20px;">How to Use</h3>
+            <ol style="padding-left: 25px;">
+                <li style="margin-bottom: 12px;">Upload your transaction data in CSV or Excel format</li>
+                <li style="margin-bottom: 12px;">Run association analysis to discover product relationships</li>
+                <li style="margin-bottom: 12px;">Generate demand forecasts based on historical patterns</li>
+                <li style="margin-bottom: 12px;">Explore visualizations to gain insights</li>
+                <li style="margin-bottom: 12px;">Download reports for your business planning</li>
+            </ol>
+            
+            <h3 style="color: #7C4DFF; margin: 25px 0 15px 0;">Data Requirements</h3>
+            <p><strong>Required columns:</strong></p>
+            <ul style="padding-left: 25px; margin-top: 5px;">
+                <li style="margin-bottom: 5px;"><strong>Date</strong>: Transaction date (YYYY-MM-DD)</li>
+                <li style="margin-bottom: 5px;"><strong>Product ID</strong>: Unique identifier for each product</li>
+                <li style="margin-bottom: 5px;"><strong>Quantity</strong>: Number of items sold</li>
+            </ul>
+            
+            <p><strong>Optional columns:</strong></p>
+            <ul style="padding-left: 25px; margin-top: 5px;">
+                <li style="margin-bottom: 5px;"><strong>Transaction ID</strong>: Unique identifier for each transaction</li>
+                <li style="margin-bottom: 5px;"><strong>Product Category</strong>: Category of the product</li>
+                <li style="margin-bottom: 5px;"><strong>Price</strong>: Price of the product</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
     
     st.info("Start by uploading your data in the 'Data Upload' section from the sidebar.")
 
@@ -185,9 +261,13 @@ elif page == "Association Analysis":
         st.warning("No data available. Please upload data first.")
     else:
         st.markdown("""
-        This section uses the Apriori algorithm to discover associations between products. 
-        These associations represent products that are frequently purchased together.
-        """)
+        <div style="background-color: rgba(124, 77, 255, 0.05); padding: 20px; border-radius: 10px; border-left: 4px solid #7C4DFF; margin-bottom: 20px;">
+            <h3 style="color: #7C4DFF; margin-top: 0;">Product Association Mining</h3>
+            <p>This section uses the Apriori algorithm to discover associations between products. 
+            These associations represent products that are frequently purchased together, helping you identify 
+            cross-selling opportunities and optimize product bundling strategies.</p>
+        </div>
+        """, unsafe_allow_html=True)
         
         st.subheader("Association Analysis Parameters")
         
@@ -268,10 +348,13 @@ elif page == "Demand Forecasting":
         st.warning("No data available. Please upload data first.")
     else:
         st.markdown("""
-        This section uses XGBoost to forecast product demand based on historical sales patterns 
-        and product associations. The model takes into account both individual product demand 
-        and the influence of associated products.
-        """)
+        <div style="background-color: rgba(124, 77, 255, 0.05); padding: 20px; border-radius: 10px; border-left: 4px solid #7C4DFF; margin-bottom: 20px;">
+            <h3 style="color: #7C4DFF; margin-top: 0;">Advanced Demand Forecasting</h3>
+            <p>This section uses XGBoost machine learning to forecast product demand based on historical sales patterns 
+            and product associations. The model takes into account both individual product demand trends 
+            and the influence of associated products, providing more accurate forecasts for inventory planning.</p>
+        </div>
+        """, unsafe_allow_html=True)
         
         st.subheader("Forecasting Parameters")
         
