@@ -1,0 +1,128 @@
+💼 Project Brief: Demand Forecasting Based on Product Association
+🧩 Project Summary
+We are building a web-based application that uses product association insights and historical sales data to forecast product demand more accurately. The platform should be interactive, data-driven, and user-friendly, with dashboards and visualizations to support business insights and inventory optimization.
+
+🧾 Core Features & Pages
+1. User Authentication
+Signup Page: Allow new users to create accounts securely.
+
+Login Page: Authenticate users with email/username and password.
+
+(Optional) Password recovery and email verification for better security and UX.
+
+2. Homepage
+Clean landing page with a brief project description.
+
+“Get Started” button or link to the Dashboard.
+
+Branding and system purpose overview.
+
+3. Dashboard
+The central area where users interact with data, models, and visualizations:
+
+Demand Forecast Visualizations:
+
+Line/bar charts showing historical and predicted demand.
+
+Actual vs. predicted comparisons.
+
+Product Association Visualizations:
+
+Network graphs or market basket visualizations showing commonly co-purchased products.
+
+Association rule summaries with support/confidence metrics.
+
+Filters and Controls:
+
+Time range, category selection, and product filters.
+
+Interactive Insights:
+
+Hover for details, drill-down on specific products or bundles.
+
+4. Sidebar (Persistent Navigation Menu)
+Dashboard
+
+Data Upload (for CSVs of transaction history)
+
+Model Output
+
+Project Objectives
+Display these directly in the sidebar for context:
+
+Improve demand forecasting accuracy
+
+Analyze transaction data for product associations
+
+Develop forecasting models that integrate association insights
+
+Predict demand for individual and bundled products
+
+Build dashboards to visualize trends and associations
+
+Optimize inventory based on related product demand
+
+📈 Demand Forecast Module (with Product Association Integration)
+This is the core intelligence of the system and should be implemented in the backend with integrated visualization support on the dashboard.
+
+🧠 Key Components:
+Input:
+
+Upload transactional sales data (e.g., CSV with dates, product IDs, quantities).
+
+Product Association Mining:
+
+Apply algorithms like Apriori or FP-Growth to extract frequent itemsets and association rules.
+
+Example rule: “Customers who buy product A also buy product B 70% of the time.”
+
+Forecasting Engine:
+
+Use time series models like ARIMA, Prophet, or LSTM to forecast demand.
+
+Adjust predictions using association weights to estimate demand for co-purchased products.
+
+Predict both individual product demand and bundle-level demand.
+
+Outputs:
+
+Dynamic graphs showing:
+
+Standalone demand forecasts
+
+Demand forecasts influenced by associated products
+
+Numerical outputs, downloadable reports, and confidence intervals.
+
+🔍 Example Use Case:
+Product A is forecasted to rise by 20% next month.
+
+Product B is strongly associated with A (confidence = 80%).
+
+System automatically forecasts increased demand for B as well, helping with bundle inventory planning.
+
+⚙️ Backend System Requirements
+Data Upload & Preprocessing:
+
+Clean uploaded data and validate format.
+
+Association Rule Mining Service:
+
+Compute and store relationships between products.
+
+Forecasting Service:
+
+Generate short- and long-term predictions.
+
+Incorporate association relationships into model logic.
+
+Database:
+
+Store transaction data, association rules, forecast results.
+
+📊 Visualization Tools
+Demand Trends: Line/area charts (e.g., Chart.js, Plotly).
+
+Association Maps: Network diagrams or force-directed graphs.
+
+Bundle Demand View: Dual graphs showing side-by-side forecasts.
