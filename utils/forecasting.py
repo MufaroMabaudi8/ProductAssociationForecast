@@ -82,7 +82,8 @@ def train_forecasting_model(data, products_to_forecast, association_rules=None, 
     model.fit(X_train, y_train)
     
     # Store feature names for later use
-    model.feature_names_in_ = X_train.columns.tolist()
+    # Since we can't set feature_names_in_ directly, we'll create a custom attribute
+    model._feature_names = X_train.columns.tolist()
     
     return model
 
@@ -189,7 +190,7 @@ def predict_demand(model, data, products_to_forecast, horizon=30):
             future_df[key] = value
         
         # If there are association features, initialize with zeros (simplified)
-        if 'AssociatedProductSales' in model.feature_names_in_:
+        if hasattr(model, '_feature_names') and 'AssociatedProductSales' in model._feature_names:
             future_df['AssociatedProductSales'] = 0
         
         # Create one-hot encoded product ID columns
@@ -197,19 +198,24 @@ def predict_demand(model, data, products_to_forecast, horizon=30):
             col_name = f'ProductID_{prod_id}'
             future_df[col_name] = 1 if prod_id == product_id else 0
         
-        # Prepare feature columns for prediction
-        feature_columns = [col for col in model.feature_names_in_ if col in future_df.columns]
+        # Use our custom stored feature names
+        if not hasattr(model, '_feature_names'):
+            # If no stored feature names, use the DataFrame columns
+            model._feature_names = future_df.columns.tolist()
         
-        # Create a copy of feature_names_in_ as a set for faster lookup
-        feature_names_set = set(model.feature_names_in_)
+        # Prepare feature columns for prediction
+        feature_columns = [col for col in model._feature_names if col in future_df.columns]
+        
+        # Create a copy of feature names as a set for faster lookup
+        feature_names_set = set(model._feature_names)
         
         # Check for missing columns and add them with zeros
-        for col in model.feature_names_in_:
+        for col in model._feature_names:
             if col not in future_df.columns:
                 future_df[col] = 0
         
-        # Make predictions
-        X_future = future_df[model.feature_names_in_]
+        # Make predictions, using only columns that exist in the model
+        X_future = future_df[feature_columns]
         future_df['Predicted_Quantity'] = model.predict(X_future)
         
         # Ensure predictions are non-negative
