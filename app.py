@@ -28,14 +28,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for enhanced UI with cyberpunk-inspired design
+# Custom CSS for enhanced UI with modern professional dark theme
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
     
     * {
-        font-family: 'Rajdhani', sans-serif;
-        letter-spacing: 0.5px;
+        font-family: 'Inter', sans-serif;
     }
     
     .main .block-container {
@@ -46,113 +45,75 @@ st.markdown("""
     
     /* Heading styles */
     h1, h2, h3 {
-        font-family: 'Orbitron', sans-serif;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
     }
     
     h1 {
-        font-size: 2.4rem !important;
-        background: linear-gradient(90deg, #00F2FF, #0072FF);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 2rem !important;
-        text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        font-size: 2.2rem !important;
+        color: #fff !important;
+        margin-bottom: 1.5rem !important;
     }
     
     h2 {
-        font-size: 1.6rem !important;
-        color: #00F2FF !important;
-        text-shadow: 0 0 5px rgba(0, 242, 255, 0.3);
+        font-size: 1.5rem !important;
+        color: #fff !important;
     }
     
     h3 {
         font-size: 1.2rem !important;
-        color: rgba(0, 242, 255, 0.9) !important;
+        color: #f8f9fa !important;
     }
     
-    /* Button styling for neon look */
+    /* Button styling */
     .stButton>button {
-        background-color: transparent;
-        color: #00F2FF;
-        border-radius: 0;
-        padding: 0.7rem 1.5rem;
-        font-weight: 600;
-        border: 1px solid #00F2FF;
+        background-color: #4B56D2;
+        color: white;
+        border-radius: 6px;
+        padding: 0.6rem 1.2rem;
+        font-weight: 500;
+        border: none;
         margin-top: 1rem;
         margin-bottom: 1rem;
-        box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         transition: all 0.2s ease;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        font-family: 'Orbitron', sans-serif;
-        position: relative;
     }
     
     .stButton>button:hover {
-        background-color: rgba(0, 242, 255, 0.1);
-        color: #ffffff;
-        box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+        background-color: #5D6AD2;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         transform: translateY(-2px);
-    }
-    
-    .stButton>button:after {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        width: calc(100% + 4px);
-        height: calc(100% + 4px);
-        border: 1px solid rgba(0, 242, 255, 0.3);
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0% {
-            opacity: 1;
-            transform: scale(1);
-        }
-        70% {
-            opacity: 0;
-            transform: scale(1.05);
-        }
-        100% {
-            opacity: 0;
-            transform: scale(1.1);
-        }
     }
     
     /* Alert styling */
     .stAlert {
-        background-color: #0A1628 !important;
-        border-radius: 0 !important;
-        border-left: 3px solid #00F2FF !important;
-        box-shadow: 0 0 15px rgba(0, 242, 255, 0.2) !important;
+        background-color: #1E1E1E !important;
+        border-radius: 6px !important;
+        border-left: 3px solid #4B56D2 !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
     }
     
     /* DataFrame styling */
     .stDataFrame {
-        border-radius: 0;
+        border-radius: 8px;
         overflow: hidden;
-        border: 1px solid rgba(0, 242, 255, 0.2);
-        box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
+        border: 1px solid rgba(75, 86, 210, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     
     /* Sidebar styling */
     .css-1d391kg, [data-testid="stSidebar"] {
-        background-color: #030912 !important;
-        border-right: 1px solid rgba(0, 242, 255, 0.1);
+        background-color: #1A1A1A !important;
+        border-right: 1px solid rgba(75, 86, 210, 0.1);
     }
     
-    /* Metrics styling for cyberpunk look */
+    /* Metrics styling */
     .css-1xarl3l, [data-testid="stMetric"] {
-        background-color: #0A1628;
+        background-color: #1E1E1E;
         padding: 1rem;
-        border-radius: 0;
-        border: 1px solid rgba(0, 242, 255, 0.2);
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2) !important;
+        border-radius: 8px;
+        border: 1px solid rgba(75, 86, 210, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
     }
     
     /* Input elements styling */
@@ -161,51 +122,35 @@ st.markdown("""
     }
     
     .stSlider > div > div, .stSelectbox > div > div, .stMultiSelect > div > div, .stNumberInput > div > div {
-        background-color: #0A1628 !important;
-        border: 1px solid rgba(0, 242, 255, 0.2) !important;
-        border-radius: 0 !important;
+        background-color: #1E1E1E !important;
+        border: 1px solid rgba(75, 86, 210, 0.2) !important;
+        border-radius: 6px !important;
     }
     
     /* Chart styling */
     .js-plotly-plot {
-        border-radius: 0;
-        background-color: rgba(10, 22, 40, 0.8);
+        border-radius: 8px;
+        background-color: rgba(30, 30, 30, 0.7);
         padding: 1rem;
         margin: 1rem 0;
-        border: 1px solid rgba(0, 242, 255, 0.2);
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(75, 86, 210, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
     
     /* Card effect */
     .card {
-        background-color: #0A1628;
-        border-radius: 0;
+        background-color: #1E1E1E;
+        border-radius: 8px;
         padding: 1.5rem;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(0, 242, 255, 0.2);
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(75, 86, 210, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .card:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: linear-gradient(to bottom, #00F2FF, transparent);
     }
     
     .card:hover {
-        box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         transform: translateY(-4px);
-    }
-    
-    .card:hover:before {
-        background: linear-gradient(to bottom, #00F2FF, #0072FF);
     }
     
     /* Custom scrollbar */
@@ -215,88 +160,72 @@ st.markdown("""
     }
     
     ::-webkit-scrollbar-track {
-        background: #050A15;
+        background: #121212;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: rgba(0, 242, 255, 0.3);
-        border-radius: 0;
+        background: rgba(75, 86, 210, 0.4);
+        border-radius: 4px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 242, 255, 0.5);
+        background: rgba(75, 86, 210, 0.6);
     }
     
     /* File uploader */
     .stFileUploader > div {
-        background-color: #0A1628;
-        border: 1px dashed rgba(0, 242, 255, 0.3);
-        border-radius: 0;
+        background-color: #1E1E1E;
+        border: 1px dashed rgba(75, 86, 210, 0.3);
+        border-radius: 6px;
     }
     
     /* Progress bar */
     .stProgress > div > div {
-        background-color: #00F2FF !important;
+        background-color: #4B56D2 !important;
     }
     
     /* Tooltip */
     .stTooltipIcon {
-        color: rgba(0, 242, 255, 0.7) !important;
+        color: rgba(75, 86, 210, 0.7) !important;
     }
     
     /* Table */
     .stTable {
-        border: 1px solid rgba(0, 242, 255, 0.2);
-        border-radius: 0;
+        border: 1px solid rgba(75, 86, 210, 0.1);
+        border-radius: 8px;
     }
     
     /* Code block */
     .stCode {
-        border-radius: 0;
+        border-radius: 6px;
     }
     
     /* Link color */
     a {
-        color: #00F2FF !important;
+        color: #6C78DD !important;
         text-decoration: none !important;
-        position: relative;
     }
     
-    a:after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 1px;
-        bottom: -2px;
-        left: 0;
-        background-color: #00F2FF;
-        transform: scaleX(0);
-        transform-origin: right;
-        transition: transform 0.3s ease;
-    }
-    
-    a:hover:after {
-        transform: scaleX(1);
-        transform-origin: left;
+    a:hover {
+        text-decoration: underline !important;
     }
     
     /* Section divider */
     hr {
-        border-color: rgba(0, 242, 255, 0.1);
+        border-color: rgba(75, 86, 210, 0.1);
         margin: 2rem 0;
     }
     
     /* Custom classes */
     .gradient-text {
-        background: linear-gradient(90deg, #00F2FF, #0072FF);
+        background: linear-gradient(90deg, #4B56D2, #818DFE);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
     }
     
-    .neon-border {
-        border: 1px solid #00F2FF;
-        box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+    .highlight-border {
+        border: 1px solid #4B56D2;
+        box-shadow: 0 0 8px rgba(75, 86, 210, 0.2);
     }
     
     .stats-container {
@@ -306,65 +235,64 @@ st.markdown("""
     }
     
     .stat-card {
-        background-color: #0A1628;
+        background-color: #1E1E1E;
         padding: 1rem;
-        border-radius: 0;
-        border-left: 3px solid #00F2FF;
+        border-radius: 8px;
+        border-left: 3px solid #4B56D2;
         flex: 1;
         margin: 0 0.5rem;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
     
-    /* Flicker animation for cyberpunk effect */
-    .flicker {
-        animation: flicker 3s infinite alternate;
+    /* Dashboard card */
+    .dashboard-card {
+        background-color: #1E1E1E;
+        border-radius: 8px;
+        padding: 1.2rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(75, 86, 210, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        height: 100%;
     }
     
-    @keyframes flicker {
-        0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-            opacity: 1;
-        }
-        20%, 22%, 24%, 55% {
-            opacity: 0.5;
-        }
+    .dashboard-card h4 {
+        color: #fff;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        font-weight: 500;
     }
     
-    /* Grid lines overlay for entire app */
-    .main:before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: 
-            linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
-        background-size: 20px 20px;
-        pointer-events: none;
-        z-index: -1;
+    .dashboard-card p {
+        font-size: 0.85rem;
+        color: #ccc;
     }
     
-    /* Top header glow */
-    h1:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
+    /* Section headers */
+    .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .section-header h3 {
+        margin: 0;
+        margin-right: 1rem;
+    }
+    
+    .section-line {
+        flex-grow: 1;
         height: 1px;
-        background: linear-gradient(90deg, transparent, #00F2FF, transparent);
-        z-index: -1;
+        background: linear-gradient(90deg, rgba(75, 86, 210, 0.5), transparent);
     }
 </style>
 """, unsafe_allow_html=True)
 
 # Application title and description with enhanced styling
-st.markdown("<h1 style='text-align: center;' class='flicker'>NEXUS<span class='gradient-text'>FORECAST</span></h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 1.1rem; margin-bottom: 2rem; font-family: \"Rajdhani\", sans-serif; letter-spacing: 2px; opacity: 0.8;'>ADVANCED DEMAND PREDICTION • PRODUCT ASSOCIATION ANALYSIS • AI-POWERED INSIGHTS</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Demand <span class='gradient-text'>Forecast</span></h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1rem; margin-bottom: 2rem; opacity: 0.8;'>Advanced product association analysis and demand prediction platform</p>", unsafe_allow_html=True)
 
 # Styled sidebar
-st.sidebar.markdown("<h2 style='text-align: center; margin-bottom: 2rem; color: #00F2FF; letter-spacing: 2px; font-family: \"Orbitron\", sans-serif;' class='flicker'>SYSTEM</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<h2 style='text-align: center; margin-bottom: 2rem; color: #4B56D2; font-size: 1.3rem;'>Navigation</h2>", unsafe_allow_html=True)
 page = st.sidebar.radio(
     "Select Section",
     ["Home", "Data Upload", "Association Analysis", "Demand Forecasting", "Visualization"],
@@ -393,60 +321,71 @@ if "product_list" not in st.session_state:
 if page == "Home":
     # Create a welcome banner
     st.markdown("""
-    <div style="background-color: rgba(0, 242, 255, 0.05); padding: 25px; border-radius: 0; border-left: 3px solid #00F2FF; margin-bottom: 30px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); position: relative; overflow: hidden;">
-        <div style="position: absolute; top: 0; right: 0; width: 150px; height: 150px; background: radial-gradient(circle at center, rgba(0, 242, 255, 0.2) 0%, transparent 70%); pointer-events: none;"></div>
-        <h2 style="color: #00F2FF; margin-top: 0; font-family: 'Orbitron', sans-serif; text-transform: uppercase; font-size: 1.4rem; text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);">ADVANCED PREDICTION MATRIX</h2>
-        <p style="font-size: 1rem; margin: 10px 0 0 0; line-height: 1.5; font-family: 'Rajdhani', sans-serif;">This system integrates neural product association mapping with predictive demand algorithms to maximize inventory efficiency and identify optimal cross-selling opportunities.</p>
+    <div class="card" style="padding: 25px; margin-bottom: 30px;">
+        <h2 style="margin-top: 0; margin-bottom: 15px; color: #4B56D2;">Product Demand Analytics</h2>
+        <p style="font-size: 1rem; margin: 0 0 10px 0; line-height: 1.5;">This platform combines product association analysis with demand forecasting to help you optimize inventory and identify cross-selling opportunities based on customer purchase patterns.</p>
     </div>
     """, unsafe_allow_html=True)
     
     # Dashboard layout
     st.markdown("""
-    <h3 style="margin: 0 0 20px 0; color: #00F2FF; letter-spacing: 2px; text-transform: uppercase; font-size: 1rem; font-family: 'Orbitron', sans-serif; display: flex; align-items: center;">
-        <span style="display: inline-block; width: 18px; height: 18px; margin-right: 8px; border: 1px solid #00F2FF; position: relative;">
-            <span style="position: absolute; top: 3px; left: 3px; right: 3px; bottom: 3px; background-color: rgba(0, 242, 255, 0.3);"></span>
-        </span>
-        SYSTEM OVERVIEW
-        <span style="flex-grow: 1; height: 1px; background: linear-gradient(90deg, #00F2FF, transparent); margin-left: 15px;"></span>
-    </h3>
+    <div class="section-header">
+        <h3>Dashboard</h3>
+        <div class="section-line"></div>
+    </div>
     """, unsafe_allow_html=True)
     
     # Create a three-column layout for sample visualizations
     col1, col2 = st.columns(2)
     
     with col1:
+        # Sample product association network visualization
         st.markdown("""
-        <div class="card">
-            <h4 style="color: #8A54FD; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Product Association Network</h4>
-            <div style="background-color: #161A2B; border-radius: 4px; height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; border: 1px solid rgba(138, 84, 253, 0.2);">
-                <div style="text-align: center;">
-                    <div style="opacity: 0.7; font-size: 2.5rem; margin-bottom: 10px;">🔗</div>
-                    <p style="margin: 0; opacity: 0.7; font-size: 0.8rem;">Upload data to generate product association network</p>
-                </div>
+        <div class="dashboard-card">
+            <h4>Product Association Network</h4>
+            <div style="height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
+                <img src="https://raw.githubusercontent.com/plotly/dash-sample-apps/main/apps/dash-network-explorer/assets/sample-network.png" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Sample Network Graph">
             </div>
-            <p style="font-size: 0.85rem; margin: 0;">Interactive visualization of product associations based on purchase patterns. Nodes represent products, and edges indicate relationship strength.</p>
+            <p>Network visualization showing product relationships, with nodes representing products and edges showing co-purchase frequency.</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
+        # Sample demand forecast visualization
         st.markdown("""
-        <div class="card">
-            <h4 style="color: #8A54FD; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Demand Forecast Trends</h4>
-            <div style="background-color: #161A2B; border-radius: 4px; height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; border: 1px solid rgba(138, 84, 253, 0.2);">
-                <div style="text-align: center;">
-                    <div style="opacity: 0.7; font-size: 2.5rem; margin-bottom: 10px;">📈</div>
-                    <p style="margin: 0; opacity: 0.7; font-size: 0.8rem;">Upload data to generate demand forecasts</p>
-                </div>
+        <div class="dashboard-card">
+            <h4>Demand Forecast Trends</h4>
+            <div style="height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
+                <img src="https://raw.githubusercontent.com/plotly/plotly.py/master/img/plotly_js_logo.png" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Sample Forecast Chart">
             </div>
-            <p style="font-size: 0.85rem; margin: 0;">Time series forecasts for product demand, considering both historical patterns and product associations for more accurate predictions.</p>
+            <p>Time series forecasts that incorporate both historical sales patterns and product associations for more accurate demand prediction.</p>
         </div>
         """, unsafe_allow_html=True)
     
+    # Add sample metrics
+    st.markdown("<div class='section-header' style='margin-top: 30px;'><h3>Key Metrics</h3><div class='section-line'></div></div>", unsafe_allow_html=True)
+    
+    # Create metrics row
+    metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
+    
+    with metric_col1:
+        st.metric("Average Association Strength", "0.68", "+0.12")
+    
+    with metric_col2:
+        st.metric("Forecast Accuracy", "89.4%", "+2.3%")
+    
+    with metric_col3:
+        st.metric("Optimal Bundle Count", "12", "+3")
+    
+    with metric_col4:
+        st.metric("Cross-Sell Opportunities", "26", "+8")
+    
     # Workflow explanation
     st.markdown("""
-    <h3 style="margin: 30px 0 20px 0; color: #8A54FD; letter-spacing: 1.5px; text-transform: uppercase; font-size: 1.1rem;">
-        <span style="border-bottom: 2px solid #8A54FD; padding-bottom: 5px;">HOW IT WORKS</span>
-    </h3>
+    <div class='section-header' style='margin-top: 30px;'>
+        <h3>How It Works</h3>
+        <div class='section-line'></div>
+    </div>
     """, unsafe_allow_html=True)
     
     # Create workflow steps
