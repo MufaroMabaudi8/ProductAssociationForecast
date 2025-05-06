@@ -28,13 +28,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for enhanced UI with futuristic minimal design
+# Custom CSS for enhanced UI with cyberpunk-inspired design
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
     
     * {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Rajdhani', sans-serif;
+        letter-spacing: 0.5px;
     }
     
     .main .block-container {
@@ -43,81 +44,115 @@ st.markdown("""
         max-width: 98%;
     }
     
+    /* Heading styles */
     h1, h2, h3 {
-        letter-spacing: 2px;
+        font-family: 'Orbitron', sans-serif;
         font-weight: 700;
         text-transform: uppercase;
+        letter-spacing: 1px;
     }
     
     h1 {
-        font-size: 2.2rem !important;
-        background: linear-gradient(90deg, #8A54FD, #A17AFD);
+        font-size: 2.4rem !important;
+        background: linear-gradient(90deg, #00F2FF, #0072FF);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 2rem !important;
+        text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
     }
     
     h2 {
-        font-size: 1.5rem !important;
-        color: #8A54FD !important;
+        font-size: 1.6rem !important;
+        color: #00F2FF !important;
+        text-shadow: 0 0 5px rgba(0, 242, 255, 0.3);
     }
     
     h3 {
         font-size: 1.2rem !important;
-        color: rgba(138, 84, 253, 0.9) !important;
+        color: rgba(0, 242, 255, 0.9) !important;
     }
     
-    /* Button styling for futuristic look */
+    /* Button styling for neon look */
     .stButton>button {
-        background-color: rgba(138, 84, 253, 0.1);
-        color: #8A54FD;
-        border-radius: 4px;
+        background-color: transparent;
+        color: #00F2FF;
+        border-radius: 0;
         padding: 0.7rem 1.5rem;
         font-weight: 600;
-        border: 1px solid #8A54FD;
+        border: 1px solid #00F2FF;
         margin-top: 1rem;
         margin-bottom: 1rem;
-        box-shadow: 0 2px 10px rgba(138, 84, 253, 0.2);
-        transition: all 0.25s ease;
-        letter-spacing: 1px;
+        box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+        transition: all 0.2s ease;
+        letter-spacing: 2px;
         text-transform: uppercase;
         font-size: 0.85rem;
+        font-family: 'Orbitron', sans-serif;
+        position: relative;
     }
     
     .stButton>button:hover {
-        background-color: #8A54FD;
-        color: white;
-        box-shadow: 0 4px 20px rgba(138, 84, 253, 0.4);
+        background-color: rgba(0, 242, 255, 0.1);
+        color: #ffffff;
+        box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
         transform: translateY(-2px);
+    }
+    
+    .stButton>button:after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        border: 1px solid rgba(0, 242, 255, 0.3);
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        70% {
+            opacity: 0;
+            transform: scale(1.05);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(1.1);
+        }
     }
     
     /* Alert styling */
     .stAlert {
-        border-radius: 4px;
-        border: none !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        background-color: #0A1628 !important;
+        border-radius: 0 !important;
+        border-left: 3px solid #00F2FF !important;
+        box-shadow: 0 0 15px rgba(0, 242, 255, 0.2) !important;
     }
     
     /* DataFrame styling */
     .stDataFrame {
-        border-radius: 4px;
+        border-radius: 0;
         overflow: hidden;
-        border: 1px solid rgba(138, 84, 253, 0.1);
+        border: 1px solid rgba(0, 242, 255, 0.2);
+        box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
     }
     
     /* Sidebar styling */
     .css-1d391kg, [data-testid="stSidebar"] {
-        background-color: #0A0C14 !important;
-        border-right: 1px solid rgba(138, 84, 253, 0.1);
+        background-color: #030912 !important;
+        border-right: 1px solid rgba(0, 242, 255, 0.1);
     }
     
-    /* Metrics styling for futuristic look */
+    /* Metrics styling for cyberpunk look */
     .css-1xarl3l, [data-testid="stMetric"] {
-        background-color: #161A2B;
+        background-color: #0A1628;
         padding: 1rem;
-        border-radius: 4px;
-        border: 1px solid rgba(138, 84, 253, 0.1);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        border-radius: 0;
+        border: 1px solid rgba(0, 242, 255, 0.2);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2) !important;
     }
     
     /* Input elements styling */
@@ -126,35 +161,51 @@ st.markdown("""
     }
     
     .stSlider > div > div, .stSelectbox > div > div, .stMultiSelect > div > div, .stNumberInput > div > div {
-        background-color: #161A2B !important;
-        border: 1px solid rgba(138, 84, 253, 0.2) !important;
-        border-radius: 4px !important;
+        background-color: #0A1628 !important;
+        border: 1px solid rgba(0, 242, 255, 0.2) !important;
+        border-radius: 0 !important;
     }
     
     /* Chart styling */
     .js-plotly-plot {
-        border-radius: 4px;
-        background-color: rgba(22, 26, 43, 0.8);
+        border-radius: 0;
+        background-color: rgba(10, 22, 40, 0.8);
         padding: 1rem;
         margin: 1rem 0;
-        border: 1px solid rgba(138, 84, 253, 0.1);
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 242, 255, 0.2);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
     
     /* Card effect */
     .card {
-        background-color: #161A2B;
-        border-radius: 4px;
+        background-color: #0A1628;
+        border-radius: 0;
         padding: 1.5rem;
         margin-bottom: 1rem;
-        border: 1px solid rgba(138, 84, 253, 0.1);
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 242, 255, 0.2);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(to bottom, #00F2FF, transparent);
     }
     
     .card:hover {
-        box-shadow: 0 8px 24px rgba(138, 84, 253, 0.2);
+        box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
         transform: translateY(-4px);
+    }
+    
+    .card:hover:before {
+        background: linear-gradient(to bottom, #00F2FF, #0072FF);
     }
     
     /* Custom scrollbar */
@@ -164,67 +215,88 @@ st.markdown("""
     }
     
     ::-webkit-scrollbar-track {
-        background: #0D0F18;
+        background: #050A15;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: rgba(138, 84, 253, 0.3);
-        border-radius: 4px;
+        background: rgba(0, 242, 255, 0.3);
+        border-radius: 0;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: rgba(138, 84, 253, 0.5);
+        background: rgba(0, 242, 255, 0.5);
     }
     
     /* File uploader */
     .stFileUploader > div {
-        background-color: #161A2B;
-        border: 1px dashed rgba(138, 84, 253, 0.3);
-        border-radius: 4px;
+        background-color: #0A1628;
+        border: 1px dashed rgba(0, 242, 255, 0.3);
+        border-radius: 0;
     }
     
     /* Progress bar */
     .stProgress > div > div {
-        background-color: #8A54FD !important;
+        background-color: #00F2FF !important;
     }
     
     /* Tooltip */
     .stTooltipIcon {
-        color: rgba(138, 84, 253, 0.7) !important;
+        color: rgba(0, 242, 255, 0.7) !important;
     }
     
     /* Table */
     .stTable {
-        border: 1px solid rgba(138, 84, 253, 0.1);
-        border-radius: 4px;
+        border: 1px solid rgba(0, 242, 255, 0.2);
+        border-radius: 0;
     }
     
     /* Code block */
     .stCode {
-        border-radius: 4px;
+        border-radius: 0;
     }
     
     /* Link color */
     a {
-        color: #A17AFD !important;
+        color: #00F2FF !important;
+        text-decoration: none !important;
+        position: relative;
+    }
+    
+    a:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        bottom: -2px;
+        left: 0;
+        background-color: #00F2FF;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+    }
+    
+    a:hover:after {
+        transform: scaleX(1);
+        transform-origin: left;
     }
     
     /* Section divider */
     hr {
-        border-color: rgba(138, 84, 253, 0.1);
+        border-color: rgba(0, 242, 255, 0.1);
         margin: 2rem 0;
     }
     
     /* Custom classes */
     .gradient-text {
-        background: linear-gradient(90deg, #8A54FD, #A17AFD);
+        background: linear-gradient(90deg, #00F2FF, #0072FF);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
     }
     
     .neon-border {
-        border: 1px solid #8A54FD;
-        box-shadow: 0 0 10px rgba(138, 84, 253, 0.5);
+        border: 1px solid #00F2FF;
+        box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
     }
     
     .stats-container {
@@ -234,23 +306,65 @@ st.markdown("""
     }
     
     .stat-card {
-        background-color: #161A2B;
+        background-color: #0A1628;
         padding: 1rem;
-        border-radius: 4px;
-        border-left: 3px solid #8A54FD;
+        border-radius: 0;
+        border-left: 3px solid #00F2FF;
         flex: 1;
         margin: 0 0.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Flicker animation for cyberpunk effect */
+    .flicker {
+        animation: flicker 3s infinite alternate;
+    }
+    
+    @keyframes flicker {
+        0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+            opacity: 1;
+        }
+        20%, 22%, 24%, 55% {
+            opacity: 0.5;
+        }
+    }
+    
+    /* Grid lines overlay for entire app */
+    .main:before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: 
+            linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+        background-size: 20px 20px;
+        pointer-events: none;
+        z-index: -1;
+    }
+    
+    /* Top header glow */
+    h1:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #00F2FF, transparent);
+        z-index: -1;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # Application title and description with enhanced styling
-st.markdown("<h1 style='text-align: center;'>SMART DEMAND <span class='gradient-text'>FORECASTING</span></h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 1.1rem; margin-bottom: 2rem; letter-spacing: 1px; opacity: 0.8;'>Advanced product association analysis and intelligent demand prediction</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;' class='flicker'>NEXUS<span class='gradient-text'>FORECAST</span></h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.1rem; margin-bottom: 2rem; font-family: \"Rajdhani\", sans-serif; letter-spacing: 2px; opacity: 0.8;'>ADVANCED DEMAND PREDICTION • PRODUCT ASSOCIATION ANALYSIS • AI-POWERED INSIGHTS</p>", unsafe_allow_html=True)
 
 # Styled sidebar
-st.sidebar.markdown("<h2 style='text-align: center; margin-bottom: 2rem; color: #8A54FD; letter-spacing: 2px;'>NAVIGATE</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<h2 style='text-align: center; margin-bottom: 2rem; color: #00F2FF; letter-spacing: 2px; font-family: \"Orbitron\", sans-serif;' class='flicker'>SYSTEM</h2>", unsafe_allow_html=True)
 page = st.sidebar.radio(
     "Select Section",
     ["Home", "Data Upload", "Association Analysis", "Demand Forecasting", "Visualization"],
@@ -279,16 +393,21 @@ if "product_list" not in st.session_state:
 if page == "Home":
     # Create a welcome banner
     st.markdown("""
-    <div style="background-color: rgba(138, 84, 253, 0.05); padding: 25px; border-radius: 4px; border-left: 3px solid #8A54FD; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-        <h2 style="color: #8A54FD; margin-top: 0; letter-spacing: 1.5px; text-transform: uppercase; font-size: 1.4rem;">Advanced Product Demand Analytics</h2>
-        <p style="font-size: 1rem; margin: 10px 0 0 0; line-height: 1.5;">This platform integrates product association discovery with intelligent demand forecasting to optimize inventory planning and identify cross-selling opportunities.</p>
+    <div style="background-color: rgba(0, 242, 255, 0.05); padding: 25px; border-radius: 0; border-left: 3px solid #00F2FF; margin-bottom: 30px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; right: 0; width: 150px; height: 150px; background: radial-gradient(circle at center, rgba(0, 242, 255, 0.2) 0%, transparent 70%); pointer-events: none;"></div>
+        <h2 style="color: #00F2FF; margin-top: 0; font-family: 'Orbitron', sans-serif; text-transform: uppercase; font-size: 1.4rem; text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);">ADVANCED PREDICTION MATRIX</h2>
+        <p style="font-size: 1rem; margin: 10px 0 0 0; line-height: 1.5; font-family: 'Rajdhani', sans-serif;">This system integrates neural product association mapping with predictive demand algorithms to maximize inventory efficiency and identify optimal cross-selling opportunities.</p>
     </div>
     """, unsafe_allow_html=True)
     
     # Dashboard layout
     st.markdown("""
-    <h3 style="margin: 0 0 20px 0; color: #8A54FD; letter-spacing: 1.5px; text-transform: uppercase; font-size: 1.1rem;">
-        <span style="border-bottom: 2px solid #8A54FD; padding-bottom: 5px;">SYSTEM OVERVIEW</span>
+    <h3 style="margin: 0 0 20px 0; color: #00F2FF; letter-spacing: 2px; text-transform: uppercase; font-size: 1rem; font-family: 'Orbitron', sans-serif; display: flex; align-items: center;">
+        <span style="display: inline-block; width: 18px; height: 18px; margin-right: 8px; border: 1px solid #00F2FF; position: relative;">
+            <span style="position: absolute; top: 3px; left: 3px; right: 3px; bottom: 3px; background-color: rgba(0, 242, 255, 0.3);"></span>
+        </span>
+        SYSTEM OVERVIEW
+        <span style="flex-grow: 1; height: 1px; background: linear-gradient(90deg, #00F2FF, transparent); margin-left: 15px;"></span>
     </h3>
     """, unsafe_allow_html=True)
     
