@@ -834,7 +834,15 @@ elif page == "Data Upload":
     
     # Data upload
     st.subheader("Upload Your Data")
-    uploaded_file = st.file_uploader("Choose a CSV or Excel file", type=["csv", "xlsx", "xls"])
+    
+    # Add debug option to load sample data automatically for testing
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        uploaded_file = st.file_uploader("Choose a CSV or Excel file", type=["csv", "xlsx", "xls"])
+    with col2:
+        if st.button("Load Sample Data"):
+            sample_data_path = "data/sample_retail_transactions.csv"
+            uploaded_file = open(sample_data_path, "rb")
     
     if uploaded_file is not None:
         try:
@@ -842,6 +850,11 @@ elif page == "Data Upload":
             with st.spinner("Loading and validating data..."):
                 # Load the data
                 data, file_type = load_and_preprocess_data(uploaded_file)
+                
+                # Print debugging information
+                st.write(f"Data type: {type(data)}")
+                st.write(f"Data columns: {data.columns.tolist()}")
+                st.write(f"Data shape: {data.shape}")
                 
                 # Validate the data format
                 is_valid, message = validate_data(data)
