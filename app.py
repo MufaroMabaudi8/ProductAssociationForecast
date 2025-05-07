@@ -971,17 +971,70 @@ elif page == "Association Analysis":
                 st.subheader("Product Association Network")
                 st.markdown("This network graph shows how products are associated with each other:")
                 
-                # Create a network graph of product associations
-                html_network = plot_association_network(rules_df)
-                st.components.v1.html(html_network, height=600)
+                # Create bar charts of product associations
+                plot_association_network(rules_df, min_lift=rules_df['lift'].min() if not rules_df.empty else 1.0)
                 
-                # Download network HTML
-                network_download = st.download_button(
-                    label="Download Network Graph (HTML)",
-                    data=html_network,
-                    file_name=f"product_association_network_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html",
-                    mime="text/html"
-                )
+                # Create a filtered dataframe for the top rules (for download report)
+                if not rules_df.empty:
+                    min_lift_value = min_support * 10  # A reasonable value based on min_support
+                    filtered_rules = rules_df[rules_df['lift'] >= min_lift_value].sort_values('lift', ascending=False).head(20)
+                
+                    # Create a simple HTML with the bar charts for download
+                    html_data = f"""
+                    <html>
+                    <head>
+                        <title>Product Association Analysis</title>
+                        <style>
+                            body {{ font-family: Arial, sans-serif; margin: 20px; }}
+                            h1 {{ color: #7C4DFF; }}
+                            table {{ border-collapse: collapse; width: 100%; }}
+                            th, td {{ padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }}
+                            th {{ background-color: #7C4DFF; color: white; }}
+                            tr:hover {{ background-color: #f5f5f5; }}
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Product Association Analysis</h1>
+                        <p>Minimum Support: {min_support} | Minimum Confidence: {min_confidence}</p>
+                        <h2>Top Association Rules</h2>
+                        <table>
+                            <tr>
+                                <th>Antecedents</th>
+                                <th>Consequents</th>
+                                <th>Support</th>
+                                <th>Confidence</th>
+                                <th>Lift</th>
+                            </tr>
+                    """
+                    
+                    # Add top 10 rules to the HTML
+                    if not filtered_rules.empty:
+                        for _, row in filtered_rules.head(10).iterrows():
+                            antecedents = ", ".join(list(row['antecedents']))
+                            consequents = ", ".join(list(row['consequents']))
+                            html_data += f"""
+                            <tr>
+                                <td>{antecedents}</td>
+                                <td>{consequents}</td>
+                                <td>{row['support']:.4f}</td>
+                                <td>{row['confidence']:.4f}</td>
+                                <td>{row['lift']:.4f}</td>
+                            </tr>
+                            """
+                    
+                    html_data += """
+                        </table>
+                    </body>
+                    </html>
+                    """
+                    
+                    # Download HTML report
+                    st.download_button(
+                        label="Download Association Report (HTML)",
+                        data=html_data,
+                        file_name=f"product_association_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html",
+                        mime="text/html"
+                    )
             else:
                 st.warning("No association rules found with the current parameters. Try reducing minimum support or confidence.")
 
@@ -1299,6 +1352,10 @@ elif page == "Demand Forecasting":
             # Create two columns
             col1, col2 = st.columns(2)
             
+            # Initialize variables to prevent NameError
+            selected_product = None
+            associated_products = []
+            
             with col1:
                 # Product selector for association analysis
                 if st.session_state.product_list is not None:
@@ -1369,7 +1426,7 @@ elif page == "Demand Forecasting":
                         st.info("Please run association analysis first.")
             
             with col2:
-                if selected_product and associated_products:
+                if selected_product and len(associated_products) > 0:
                     # Get correlation between selected product and associated products
                     if st.session_state.preprocessed_data is not None:
                         data = st.session_state.preprocessed_data
