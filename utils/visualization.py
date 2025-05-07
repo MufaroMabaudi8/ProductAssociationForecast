@@ -68,7 +68,7 @@ def plot_association_network(rules_df, min_lift=1.2, max_nodes=50):
                     G.add_edge(ant, cons, weight=row['lift'], confidence=row['confidence'])
     
     # Create a PyVis network
-    net = Network(height="500px", width="100%", notebook=True, directed=False)
+    net = Network(height="600px", width="100%", notebook=False, directed=False, bgcolor="#161A2B", font_color="white")
     
     # Calculate node size based on degree centrality
     degree_centrality = nx.degree_centrality(G)
@@ -177,10 +177,12 @@ def plot_forecasting_results(data, predictions, products_to_forecast, n_rows=2):
     
     # Update layout
     fig.update_layout(
-        height=300 * n_rows,
-        width=1000,
+        height=350 * n_rows,
+        width=900,
         title_text="Product Demand Forecasts",
-        hovermode="closest"
+        hovermode="closest",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=50, r=50, t=80, b=50)
     )
     
     # Add a single legend
@@ -299,8 +301,9 @@ def plot_product_associations_heatmap(rules_df, top_products):
     
     fig.update_layout(
         height=600,
-        width=700,
+        width=850,
         xaxis=dict(tickangle=45),
+        margin=dict(l=60, r=60, t=80, b=50)
     )
     
     st.plotly_chart(fig, use_container_width=True)

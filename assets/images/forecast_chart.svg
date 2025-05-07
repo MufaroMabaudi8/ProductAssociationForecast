@@ -1,101 +1,164 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="700" height="400" viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="histGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8A54FD;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#8A54FD;stop-opacity:0.2" />
+    </linearGradient>
+    <linearGradient id="forecastGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#42A5F5;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#42A5F5;stop-opacity:0.2" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
   <!-- Background -->
-  <rect width="700" height="400" fill="#161A2B"/>
+  <rect width="800" height="500" fill="#161A2B" rx="10" ry="10"/>
   
-  <!-- Chart Axes -->
-  <line x1="50" y1="350" x2="650" y2="350" stroke="#666" stroke-width="2"/>
-  <line x1="50" y1="50" x2="50" y2="350" stroke="#666" stroke-width="2"/>
-  
-  <!-- X-axis labels (Months) -->
-  <text x="100" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">JAN</text>
-  <text x="150" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">FEB</text>
-  <text x="200" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">MAR</text>
-  <text x="250" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">APR</text>
-  <text x="300" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">MAY</text>
-  <text x="350" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">JUN</text>
-  <text x="400" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">JUL</text>
-  <text x="450" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">AUG</text>
-  <text x="500" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">SEP</text>
-  <text x="550" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">OCT</text>
-  <text x="600" y="370" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">NOV</text>
-  
-  <!-- Y-axis labels (Quantities) -->
-  <text x="35" y="350" text-anchor="end" font-family="Arial" font-size="10" fill="#bbb">0</text>
-  <text x="35" y="300" text-anchor="end" font-family="Arial" font-size="10" fill="#bbb">100</text>
-  <text x="35" y="250" text-anchor="end" font-family="Arial" font-size="10" fill="#bbb">200</text>
-  <text x="35" y="200" text-anchor="end" font-family="Arial" font-size="10" fill="#bbb">300</text>
-  <text x="35" y="150" text-anchor="end" font-family="Arial" font-size="10" fill="#bbb">400</text>
-  <text x="35" y="100" text-anchor="end" font-family="Arial" font-size="10" fill="#bbb">500</text>
-  <text x="35" y="50" text-anchor="end" font-family="Arial" font-size="10" fill="#bbb">600</text>
+  <!-- Title -->
+  <text x="400" y="30" font-family="Arial" font-size="18" fill="white" text-anchor="middle" filter="url(#shadow)">
+    Product Demand Forecast
+  </text>
   
   <!-- Grid lines -->
-  <line x1="50" y1="300" x2="650" y2="300" stroke="#444" stroke-width="1" stroke-dasharray="5,5"/>
-  <line x1="50" y1="250" x2="650" y2="250" stroke="#444" stroke-width="1" stroke-dasharray="5,5"/>
-  <line x1="50" y1="200" x2="650" y2="200" stroke="#444" stroke-width="1" stroke-dasharray="5,5"/>
-  <line x1="50" y1="150" x2="650" y2="150" stroke="#444" stroke-width="1" stroke-dasharray="5,5"/>
-  <line x1="50" y1="100" x2="650" y2="100" stroke="#444" stroke-width="1" stroke-dasharray="5,5"/>
-  <line x1="50" y1="50" x2="650" y2="50" stroke="#444" stroke-width="1" stroke-dasharray="5,5"/>
+  <g stroke="#36395A" stroke-width="1" stroke-dasharray="4">
+    <!-- Horizontal grid lines -->
+    <line x1="100" y1="400" x2="750" y2="400"/>
+    <line x1="100" y1="350" x2="750" y2="350"/>
+    <line x1="100" y1="300" x2="750" y2="300"/>
+    <line x1="100" y1="250" x2="750" y2="250"/>
+    <line x1="100" y1="200" x2="750" y2="200"/>
+    <line x1="100" y1="150" x2="750" y2="150"/>
+    <line x1="100" y1="100" x2="750" y2="100"/>
+    <!-- Vertical grid lines -->
+    <line x1="100" y1="400" x2="100" y2="100"/>
+    <line x1="191" y1="400" x2="191" y2="100"/>
+    <line x1="282" y1="400" x2="282" y2="100"/>
+    <line x1="373" y1="400" x2="373" y2="100"/>
+    <line x1="464" y1="400" x2="464" y2="100"/>
+    <line x1="555" y1="400" x2="555" y2="100"/>
+    <line x1="646" y1="400" x2="646" y2="100"/>
+    <line x1="737" y1="400" x2="737" y2="100"/>
+  </g>
+  
+  <!-- Axes -->
+  <line x1="100" y1="400" x2="750" y2="400" stroke="white" stroke-width="2"/>
+  <line x1="100" y1="400" x2="100" y2="100" stroke="white" stroke-width="2"/>
+  
+  <!-- X-axis labels -->
+  <text x="100" y="420" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Jan</text>
+  <text x="191" y="420" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Feb</text>
+  <text x="282" y="420" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Mar</text>
+  <text x="373" y="420" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Apr</text>
+  <text x="464" y="420" font-family="Arial" font-size="12" fill="white" text-anchor="middle">May</text>
+  <text x="555" y="420" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Jun</text>
+  <text x="646" y="420" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Jul</text>
+  <text x="737" y="420" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Aug</text>
+  
+  <!-- Y-axis labels -->
+  <text x="90" y="400" font-family="Arial" font-size="12" fill="white" text-anchor="end">0</text>
+  <text x="90" y="350" font-family="Arial" font-size="12" fill="white" text-anchor="end">50</text>
+  <text x="90" y="300" font-family="Arial" font-size="12" fill="white" text-anchor="end">100</text>
+  <text x="90" y="250" font-family="Arial" font-size="12" fill="white" text-anchor="end">150</text>
+  <text x="90" y="200" font-family="Arial" font-size="12" fill="white" text-anchor="end">200</text>
+  <text x="90" y="150" font-family="Arial" font-size="12" fill="white" text-anchor="end">250</text>
+  <text x="90" y="100" font-family="Arial" font-size="12" fill="white" text-anchor="end">300</text>
   
   <!-- Axis titles -->
-  <text x="350" y="395" text-anchor="middle" font-family="Arial" font-size="12" fill="white">Date</text>
-  <text x="15" y="200" text-anchor="middle" font-family="Arial" font-size="12" fill="white" transform="rotate(-90, 15, 200)">Sales Quantity</text>
+  <text x="425" y="450" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Time Period</text>
+  <text x="40" y="250" font-family="Arial" font-size="14" fill="white" text-anchor="middle" transform="rotate(-90, 40, 250)">Quantity</text>
   
-  <!-- Historical data line (Product A) -->
-  <polyline 
-    points="100,280 150,260 200,230 250,240 300,200 350,220 400,180"
-    fill="none" 
-    stroke="#4B56D2" 
-    stroke-width="3"
-  />
+  <!-- Historical Data (Product A) -->
+  <polyline points="100,300 191,280 282,310 373,260" fill="none" stroke="#8A54FD" stroke-width="3"/>
   
-  <!-- Add points for historical data -->
-  <circle cx="100" cy="280" r="4" fill="#4B56D2"/>
-  <circle cx="150" cy="260" r="4" fill="#4B56D2"/>
-  <circle cx="200" cy="230" r="4" fill="#4B56D2"/>
-  <circle cx="250" cy="240" r="4" fill="#4B56D2"/>
-  <circle cx="300" cy="200" r="4" fill="#4B56D2"/>
-  <circle cx="350" cy="220" r="4" fill="#4B56D2"/>
-  <circle cx="400" cy="180" r="4" fill="#4B56D2"/>
+  <!-- Historical Data Area -->
+  <path d="M100,300 L191,280 L282,310 L373,260 L373,400 L282,400 L191,400 L100,400 Z" fill="url(#histGrad)"/>
   
-  <!-- Forecast data (dashed line) -->
-  <polyline 
-    points="400,180 450,160 500,140 550,120 600,130"
-    fill="none" 
-    stroke="#8A54FD" 
-    stroke-width="3"
-    stroke-dasharray="5,5"
-  />
+  <!-- Forecast Data (Product A) - dashed line to show it's a prediction -->
+  <polyline points="373,260 464,230 555,220 646,250 737,240" fill="none" stroke="#42A5F5" stroke-width="3" stroke-dasharray="6,3"/>
   
-  <!-- Forecast confidence interval (semi-transparent area) -->
-  <path 
-    d="M400,200 L450,180 L500,160 L550,140 L600,150 L600,110 L550,100 L500,120 L450,140 L400,160 Z" 
-    fill="#8A54FD" 
-    opacity="0.2"
-  />
+  <!-- Forecast Data Area -->
+  <path d="M373,260 L464,230 L555,220 L646,250 L737,240 L737,400 L646,400 L555,400 L464,400 L373,400 Z" fill="url(#forecastGrad)"/>
   
-  <!-- Add points for forecast data -->
-  <circle cx="450" cy="160" r="4" fill="#8A54FD"/>
-  <circle cx="500" cy="140" r="4" fill="#8A54FD"/>
-  <circle cx="550" cy="120" r="4" fill="#8A54FD"/>
-  <circle cx="600" cy="130" r="4" fill="#8A54FD"/>
+  <!-- Historical Data (Product B) -->
+  <polyline points="100,350 191,320 282,340 373,330" fill="none" stroke="#00CC00" stroke-width="3"/>
   
-  <!-- Dividing line between historical and forecasted -->
-  <line x1="400" y1="50" x2="400" y2="350" stroke="#666" stroke-width="1" stroke-dasharray="5,5"/>
-  <text x="400" y="40" text-anchor="middle" font-family="Arial" font-size="10" fill="#bbb">Forecast Start</text>
+  <!-- Forecast Data (Product B) - dashed line -->
+  <polyline points="373,330 464,310 555,290 646,320 737,300" fill="none" stroke="#6FFFB0" stroke-width="3" stroke-dasharray="6,3"/>
+  
+  <!-- Dividing line between historical and forecast data -->
+  <line x1="373" y1="100" x2="373" y2="400" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="373" y="90" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Now</text>
   
   <!-- Legend -->
-  <rect x="500" y="50" width="140" height="80" fill="#1E2130" rx="5" ry="5" opacity="0.8"/>
-  <text x="510" y="70" font-family="Arial" font-size="12" fill="white">Legend</text>
+  <rect x="600" y="50" width="170" height="100" rx="5" ry="5" fill="rgba(30, 33, 48, 0.8)" stroke="#8A54FD" stroke-width="1"/>
+  <text x="620" y="70" font-family="Arial" font-size="14" fill="white">Legend</text>
   
-  <line x1="510" y1="85" x2="540" y2="85" stroke="#4B56D2" stroke-width="3"/>
-  <text x="545" y="88" font-family="Arial" font-size="10" fill="white">Historical Data</text>
+  <!-- Product A Legend -->
+  <line x1="620" y1="90" x2="650" y2="90" stroke="#8A54FD" stroke-width="3"/>
+  <text x="660" y="95" font-family="Arial" font-size="12" fill="white">Product A (Historical)</text>
   
-  <line x1="510" y1="105" x2="540" y2="105" stroke="#8A54FD" stroke-width="3" stroke-dasharray="5,5"/>
-  <text x="545" y="108" font-family="Arial" font-size="10" fill="white">Forecast</text>
+  <line x1="620" y1="110" x2="650" y2="110" stroke="#42A5F5" stroke-width="3" stroke-dasharray="6,3"/>
+  <text x="660" y="115" font-family="Arial" font-size="12" fill="white">Product A (Forecast)</text>
   
-  <rect x="510" y="115" width="30" height="10" fill="#8A54FD" opacity="0.2"/>
-  <text x="545" y="123" font-family="Arial" font-size="10" fill="white">Confidence Interval</text>
+  <!-- Product B Legend -->
+  <line x1="620" y1="130" x2="650" y2="130" stroke="#00CC00" stroke-width="3"/>
+  <text x="660" y="135" font-family="Arial" font-size="12" fill="white">Product B (Historical)</text>
   
-  <text x="350" y="20" text-anchor="middle" font-family="Arial" font-size="14" fill="#8A54FD">Product A - Sales Forecast</text>
+  <line x1="620" y1="150" x2="650" y2="150" stroke="#6FFFB0" stroke-width="3" stroke-dasharray="6,3"/>
+  <text x="660" y="155" font-family="Arial" font-size="12" fill="white">Product B (Forecast)</text>
+
+  <!-- Data points with hover effect for Product A -->
+  <circle cx="100" cy="300" r="4" fill="#8A54FD" stroke="white" stroke-width="1">
+    <title>Jan: 100 units</title>
+  </circle>
+  <circle cx="191" cy="280" r="4" fill="#8A54FD" stroke="white" stroke-width="1">
+    <title>Feb: 120 units</title>
+  </circle>
+  <circle cx="282" cy="310" r="4" fill="#8A54FD" stroke="white" stroke-width="1">
+    <title>Mar: 90 units</title>
+  </circle>
+  <circle cx="373" cy="260" r="4" fill="#8A54FD" stroke="white" stroke-width="1">
+    <title>Apr: 140 units</title>
+  </circle>
+  <circle cx="464" cy="230" r="4" fill="#42A5F5" stroke="white" stroke-width="1">
+    <title>May: 170 units (Forecast)</title>
+  </circle>
+  <circle cx="555" cy="220" r="4" fill="#42A5F5" stroke="white" stroke-width="1">
+    <title>Jun: 180 units (Forecast)</title>
+  </circle>
+  <circle cx="646" cy="250" r="4" fill="#42A5F5" stroke="white" stroke-width="1">
+    <title>Jul: 150 units (Forecast)</title>
+  </circle>
+  <circle cx="737" cy="240" r="4" fill="#42A5F5" stroke="white" stroke-width="1">
+    <title>Aug: 160 units (Forecast)</title>
+  </circle>
+  
+  <!-- Data points for Product B -->
+  <circle cx="100" cy="350" r="4" fill="#00CC00" stroke="white" stroke-width="1">
+    <title>Jan: 50 units</title>
+  </circle>
+  <circle cx="191" cy="320" r="4" fill="#00CC00" stroke="white" stroke-width="1">
+    <title>Feb: 80 units</title>
+  </circle>
+  <circle cx="282" cy="340" r="4" fill="#00CC00" stroke="white" stroke-width="1">
+    <title>Mar: 60 units</title>
+  </circle>
+  <circle cx="373" cy="330" r="4" fill="#00CC00" stroke="white" stroke-width="1">
+    <title>Apr: 70 units</title>
+  </circle>
+  <circle cx="464" cy="310" r="4" fill="#6FFFB0" stroke="white" stroke-width="1">
+    <title>May: 90 units (Forecast)</title>
+  </circle>
+  <circle cx="555" cy="290" r="4" fill="#6FFFB0" stroke="white" stroke-width="1">
+    <title>Jun: 110 units (Forecast)</title>
+  </circle>
+  <circle cx="646" cy="320" r="4" fill="#6FFFB0" stroke="white" stroke-width="1">
+    <title>Jul: 80 units (Forecast)</title>
+  </circle>
+  <circle cx="737" cy="300" r="4" fill="#6FFFB0" stroke="white" stroke-width="1">
+    <title>Aug: 100 units (Forecast)</title>
+  </circle>
 </svg>
