@@ -385,31 +385,170 @@ if page == "Home":
     """, unsafe_allow_html=True)
     
     # Create a three-column layout for sample visualizations
-    col1, col2 = st.columns(2)
+    # Create a more colorful, futuristic dashboard with multiple visualizations
+    import plotly.express as px
+    import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
+    import numpy as np
     
-    with col1:
-        # Sample product association network visualization using local SVG
-        st.markdown("""
-        <div class="dashboard-card">
-            <h4>Product Association Network</h4>
-            <div style="height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
-                <img src="assets/images/network_graph.svg" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Sample Network Graph">
-            </div>
-            <p>Network visualization showing product relationships, with nodes representing products and edges showing co-purchase frequency.</p>
-        </div>
-        """, unsafe_allow_html=True)
+    # Generate sample data for visualizations (will be replaced with real data when available)
+    dates = pd.date_range(start='2024-01-01', periods=30)
+    products = ['Product A', 'Product B', 'Product C', 'Product D', 'Product E']
     
-    with col2:
-        # Sample demand forecast visualization using local SVG
-        st.markdown("""
-        <div class="dashboard-card">
-            <h4>Demand Forecast Trends</h4>
-            <div style="height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
-                <img src="assets/images/forecast_chart.svg" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Sample Forecast Chart">
-            </div>
-            <p>Time series forecasts that incorporate both historical sales patterns and product associations for more accurate demand prediction.</p>
-        </div>
-        """, unsafe_allow_html=True)
+    # Sample data for product demand
+    demand_data = pd.DataFrame({
+        'Date': np.repeat(dates, len(products)),
+        'Product': np.tile(products, len(dates)),
+        'Demand': np.random.randint(10, 100, size=len(dates) * len(products)),
+        'Forecast': np.random.randint(10, 100, size=len(dates) * len(products))
+    })
+    
+    # Create tabs for different dashboard views
+    tab1, tab2, tab3 = st.tabs(["Demand Analysis", "Product Associations", "Inventory Health"])
+    
+    with tab1:
+        st.subheader("Product Demand Trends")
+        
+        # Create a modern line chart for demand trends
+        fig = px.line(
+            demand_data,
+            x="Date",
+            y="Demand",
+            color="Product",
+            title="Product Demand Over Time",
+            template="plotly_dark",
+        )
+        
+        # Update layout for more futuristic look
+        fig.update_layout(
+            plot_bgcolor="rgba(25, 25, 40, 0.8)",
+            paper_bgcolor="rgba(25, 25, 40, 0)",
+            font=dict(color="white"),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.2,
+                xanchor="center",
+                x=0.5,
+                bgcolor="rgba(25, 25, 40, 0.8)",
+            ),
+            margin=dict(l=20, r=20, t=50, b=20),
+            height=400
+        )
+        
+        # Add a futuristic glow effect
+        fig.update_traces(line=dict(width=3))
+        
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with tab2:
+        st.subheader("Product Association Matrix")
+        
+        # Create a sample correlation matrix for products
+        corr_matrix = np.array([
+            [1.0, 0.8, 0.5, 0.3, 0.1],
+            [0.8, 1.0, 0.7, 0.2, 0.4],
+            [0.5, 0.7, 1.0, 0.6, 0.3],
+            [0.3, 0.2, 0.6, 1.0, 0.9],
+            [0.1, 0.4, 0.3, 0.9, 1.0]
+        ])
+        
+        # Create a heatmap
+        fig = px.imshow(
+            corr_matrix,
+            x=products,
+            y=products,
+            color_continuous_scale="Viridis",
+            labels=dict(x="Product", y="Product", color="Association Strength"),
+            title="Product Association Strength Matrix"
+        )
+        
+        # Update layout for futuristic look
+        fig.update_layout(
+            plot_bgcolor="rgba(25, 25, 40, 0.8)",
+            paper_bgcolor="rgba(25, 25, 40, 0)",
+            font=dict(color="white"),
+            margin=dict(l=20, r=20, t=50, b=20),
+            height=400
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with tab3:
+        st.subheader("Inventory Optimization")
+        
+        # Create a sample gauge chart for inventory health
+        fig = make_subplots(
+            rows=1, cols=3,
+            specs=[[{"type": "indicator"}, {"type": "indicator"}, {"type": "indicator"}]],
+            subplot_titles=("Stock Level", "Reorder Efficiency", "Fulfillment Rate")
+        )
+        
+        # Add inventory health gauges
+        fig.add_trace(
+            go.Indicator(
+                mode="gauge+number",
+                value=85,
+                gauge={
+                    "axis": {"range": [0, 100]},
+                    "bar": {"color": "rgba(138, 84, 253, 0.9)"},
+                    "steps": [
+                        {"range": [0, 50], "color": "rgba(255, 100, 100, 0.7)"},
+                        {"range": [50, 80], "color": "rgba(255, 200, 100, 0.7)"},
+                        {"range": [80, 100], "color": "rgba(100, 255, 100, 0.7)"}
+                    ]
+                },
+                title={"text": "Current Stock"}
+            ),
+            row=1, col=1
+        )
+        
+        fig.add_trace(
+            go.Indicator(
+                mode="gauge+number",
+                value=92,
+                gauge={
+                    "axis": {"range": [0, 100]},
+                    "bar": {"color": "rgba(138, 84, 253, 0.9)"},
+                    "steps": [
+                        {"range": [0, 50], "color": "rgba(255, 100, 100, 0.7)"},
+                        {"range": [50, 80], "color": "rgba(255, 200, 100, 0.7)"},
+                        {"range": [80, 100], "color": "rgba(100, 255, 100, 0.7)"}
+                    ]
+                },
+                title={"text": "Reorder Efficiency"}
+            ),
+            row=1, col=2
+        )
+        
+        fig.add_trace(
+            go.Indicator(
+                mode="gauge+number",
+                value=96,
+                gauge={
+                    "axis": {"range": [0, 100]},
+                    "bar": {"color": "rgba(138, 84, 253, 0.9)"},
+                    "steps": [
+                        {"range": [0, 50], "color": "rgba(255, 100, 100, 0.7)"},
+                        {"range": [50, 80], "color": "rgba(255, 200, 100, 0.7)"},
+                        {"range": [80, 100], "color": "rgba(100, 255, 100, 0.7)"}
+                    ]
+                },
+                title={"text": "Order Fulfillment"}
+            ),
+            row=1, col=3
+        )
+        
+        # Update layout for futuristic look
+        fig.update_layout(
+            plot_bgcolor="rgba(25, 25, 40, 0.8)",
+            paper_bgcolor="rgba(25, 25, 40, 0)",
+            font=dict(color="white"),
+            height=350,
+            margin=dict(l=20, r=20, t=80, b=20)
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
     
     # Add sample metrics
     st.markdown("<div class='section-header' style='margin-top: 30px;'><h3>Key Metrics</h3><div class='section-line'></div></div>", unsafe_allow_html=True)
@@ -972,6 +1111,7 @@ elif page == "Inventory Optimization":
                                 product_bundles.append((bundle_items, confidence, lift))
                         
                         # Get bundle recommendations
+                        # Pass service level to calculate reorder points for individual products inside bundles
                         bundle_recommendations = get_bundle_inventory_recommendations(
                             historical_data,
                             forecast_data,

@@ -226,7 +226,7 @@ def get_inventory_recommendations(historical_data, forecast_data, lead_time_days
     
     return recommendations
 
-def get_bundle_inventory_recommendations(historical_data, forecast_data, product_bundles, lead_time_days=7):
+def get_bundle_inventory_recommendations(historical_data, forecast_data, product_bundles, lead_time_days=7, service_level=0.95):
     """
     Generate inventory recommendations for product bundles
     
@@ -240,6 +240,8 @@ def get_bundle_inventory_recommendations(historical_data, forecast_data, product
         List of product bundles [(bundle_items, confidence, lift), ...]
     lead_time_days : int, optional
         Lead time in days for replenishment
+    service_level : float, optional
+        Desired service level (default: 0.95 or 95%)
     
     Returns:
     --------
@@ -260,7 +262,8 @@ def get_bundle_inventory_recommendations(historical_data, forecast_data, product
         individual_recs = get_inventory_recommendations(
             historical_data[historical_data['ProductID'].isin(product_ids)],
             forecast_data[forecast_data['ProductID'].isin(product_ids)],
-            lead_time_days
+            lead_time_days=lead_time_days,
+            service_level=service_level
         )
         
         # Calculate average recommendation values for the bundle

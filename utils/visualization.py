@@ -12,7 +12,7 @@ import tempfile
 
 def plot_association_network(rules_df, min_lift=1.2, max_nodes=50):
     """
-    Create an interactive network visualization of product associations
+    Create bar charts visualization of product associations instead of network graph
     
     Parameters:
     -----------
@@ -25,82 +25,150 @@ def plot_association_network(rules_df, min_lift=1.2, max_nodes=50):
     
     Returns:
     --------
-    str
-        HTML string of the network visualization
+    None - displays the charts directly using Streamlit
     """
-    if rules_df.empty:
-        # Return empty HTML if no rules
-        return "<p>No association rules to display</p>"
+    if rules_df is None or rules_df.empty:
+        st.info("No association rules found. Please run the association analysis first.")
+        return
+    
+    # Filter rules by minimum lift
+    filtered_rules = rules_df[rules_df['lift'] >= min_lift].sort_values('lift', ascending=False).head(20)
+    
+    if filtered_rules.empty:
+        st.info(f"No rules found with lift >= {min_lift}. Try lowering the minimum lift threshold.")
+        return
+    
+    # Create two visualizations side by side
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("Top Product Associations by Lift")
         
-    # Filter rules by lift
-    rules_df = rules_df[rules_df['lift'] >= min_lift]
+        # Format rule labels for better readability
+        rule_labels = []
+        for _, row in filtered_rules.head(10).iterrows():
+            ant = list(row['antecedents'])
+            cons = list(row['consequents'])
+            if len(ant) > 0 and len(cons) > 0:
+                # Keep label short
+                ant_str = ant[0]
+                cons_str = cons[0]
+                if len(ant) > 1:
+                    ant_str += f"+{len(ant)-1}"
+                rule_labels.append(f"{ant_str} → {cons_str}")
+        
+        # Create bar chart for lift
+        top_lifts = filtered_rules['lift'].head(10).tolist()
+        
+        fig = px.bar(
+            x=top_lifts,
+            y=rule_labels if rule_labels else ["No rules"],
+            orientation='h',
+            labels={'x': 'Lift Value', 'y': 'Association Rule'},
+            title='Top Association Rules by Lift',
+            color=top_lifts,
+            color_continuous_scale='Viridis'
+        )
+        
+        fig.update_layout(
+            height=400,
+            xaxis_title="Lift Value",
+            yaxis_title="Association Rule",
+            font=dict(color="white"),
+            plot_bgcolor="rgba(25, 25, 40, 0.8)",
+            paper_bgcolor="rgba(25, 25, 40, 0)",
+            margin=dict(l=20, r=20, t=50, b=20)
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
     
-    if len(rules_df) == 0:
-        return "<p>No association rules meet the minimum lift criteria</p>"
+    with col2:
+        st.subheader("Top Product Associations by Confidence")
+        
+        # Sort by confidence for the second chart
+        conf_rules = rules_df[rules_df['lift'] >= min_lift].sort_values('confidence', ascending=False).head(10)
+        
+        # Format rule labels
+        conf_rule_labels = []
+        for _, row in conf_rules.iterrows():
+            ant = list(row['antecedents'])
+            cons = list(row['consequents'])
+            if len(ant) > 0 and len(cons) > 0:
+                # Keep label short
+                ant_str = ant[0]
+                cons_str = cons[0]
+                if len(ant) > 1:
+                    ant_str += f"+{len(ant)-1}"
+                conf_rule_labels.append(f"{ant_str} → {cons_str}")
+        
+        # Create bar chart for confidence
+        top_conf = conf_rules['confidence'].tolist()
+        
+        fig = px.bar(
+            x=top_conf,
+            y=conf_rule_labels if conf_rule_labels else ["No rules"],
+            orientation='h',
+            labels={'x': 'Confidence', 'y': 'Association Rule'},
+            title='Top Association Rules by Confidence',
+            color=top_conf,
+            color_continuous_scale='Plasma'
+        )
+        
+        fig.update_layout(
+            height=400,
+            xaxis_title="Confidence",
+            yaxis_title="Association Rule",
+            font=dict(color="white"),
+            plot_bgcolor="rgba(25, 25, 40, 0.8)",
+            paper_bgcolor="rgba(25, 25, 40, 0)",
+            margin=dict(l=20, r=20, t=50, b=20)
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
     
-    # Create a network graph
-    G = nx.Graph()
+    # Add a third visualization for product frequency
+    st.subheader("Most Frequently Associated Products")
     
-    # Limit the number of rules for better visualization
-    if len(rules_df) > max_nodes:
-        rules_df = rules_df.sort_values('lift', ascending=False).head(max_nodes)
+    # Count product occurrences in rules
+    product_counts = {}
     
-    # Add nodes and edges
-    for _, row in rules_df.iterrows():
+    for _, row in filtered_rules.iterrows():
         antecedents = list(row['antecedents'])
         consequents = list(row['consequents'])
         
-        # Add all antecedents and consequents as nodes
-        for item in antecedents + consequents:
-            if not G.has_node(item):
-                G.add_node(item)
-        
-        # Add edges between antecedents and consequents
-        for ant in antecedents:
-            for cons in consequents:
-                if G.has_edge(ant, cons):
-                    # If edge exists, update weight based on lift
-                    current_weight = G[ant][cons]['weight']
-                    G[ant][cons]['weight'] = max(current_weight, row['lift'])
-                    G[ant][cons]['confidence'] = max(G[ant][cons].get('confidence', 0), row['confidence'])
-                else:
-                    # Add new edge
-                    G.add_edge(ant, cons, weight=row['lift'], confidence=row['confidence'])
+        for product in antecedents + consequents:
+            if product in product_counts:
+                product_counts[product] += 1
+            else:
+                product_counts[product] = 1
     
-    # Create a PyVis network
-    net = Network(height="600px", width="100%", notebook=False, directed=False, bgcolor="#161A2B", font_color="white")
+    # Sort products by frequency
+    sorted_products = sorted(product_counts.items(), key=lambda x: x[1], reverse=True)
+    top_products = [p[0] for p in sorted_products[:15]]
+    product_frequencies = [p[1] for p in sorted_products[:15]]
     
-    # Calculate node size based on degree centrality
-    degree_centrality = nx.degree_centrality(G)
+    # Create bar chart for product frequency
+    fig = px.bar(
+        x=product_frequencies,
+        y=top_products,
+        orientation='h',
+        title='Most Frequently Associated Products',
+        color=product_frequencies,
+        color_continuous_scale='Turbo',
+        labels={'x': 'Frequency in Rules', 'y': 'Product'}
+    )
     
-    # Add nodes with size based on centrality
-    for node in G.nodes():
-        size = 20 + (degree_centrality[node] * 50)
-        net.add_node(node, label=str(node), size=size, title=f"Product: {node}")
+    fig.update_layout(
+        height=500,
+        xaxis_title="Frequency in Association Rules",
+        yaxis_title="Product ID",
+        font=dict(color="white"),
+        plot_bgcolor="rgba(25, 25, 40, 0.8)",
+        paper_bgcolor="rgba(25, 25, 40, 0)",
+        margin=dict(l=20, r=20, t=50, b=20)
+    )
     
-    # Add edges with width based on lift and color based on confidence
-    for u, v, data in G.edges(data=True):
-        width = 1 + (data['weight'] - min_lift) * 3  # Scale width based on lift
-        
-        # Color based on confidence (green for high, yellow for medium, red for low)
-        confidence = data['confidence']
-        if confidence >= 0.75:
-            color = "#00CC00"  # Green
-        elif confidence >= 0.5:
-            color = "#FFCC00"  # Yellow
-        else:
-            color = "#FF6666"  # Light red
-        
-        title = f"Lift: {data['weight']:.2f}, Confidence: {data['confidence']:.2f}"
-        net.add_edge(u, v, width=width, title=title, color=color)
-    
-    # Set physics layout
-    net.barnes_hut(gravity=-5000, central_gravity=0.1, spring_length=200)
-    
-    # Generate HTML
-    html_string = net.generate_html()
-    
-    return html_string
+    st.plotly_chart(fig, use_container_width=True)
 
 def plot_forecasting_results(data, predictions, products_to_forecast, n_rows=2):
     """
