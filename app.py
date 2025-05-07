@@ -323,7 +323,7 @@ if is_authenticated():
     
     if st.sidebar.button("Sign Out", key="signout"):
         logout_user()
-        st.experimental_rerun()
+        st.rerun()
 else:
     st.sidebar.markdown("""
     <div style="background-color: #1E1E1E; padding: 10px; border-radius: 5px; margin-bottom: 20px; border-left: 3px solid #FF6B6B;">
@@ -550,7 +550,7 @@ elif page == "Login":
                             login_user(user)
                             st.success("Login successful!")
                             time.sleep(1)
-                            st.experimental_rerun()
+                            st.rerun()
                         else:
                             st.error("Invalid email or password. Please try again.")
 
@@ -603,7 +603,7 @@ elif page == "Register":
                             time.sleep(2)
                             # Redirect to login page
                             st.session_state.page = "Login"
-                            st.experimental_rerun()
+                            st.rerun()
                         else:
                             st.error(message)
 
@@ -648,7 +648,7 @@ elif page == "User Profile":
                     success, updated_user = authenticate_user(user['email'], password=user.get('password_hash'))
                     if success:
                         login_user(updated_user)
-                        st.experimental_rerun()
+                        st.rerun()
                 else:
                     st.error(message)
         
