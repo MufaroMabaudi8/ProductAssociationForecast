@@ -1293,6 +1293,129 @@ elif page == "Demand Forecasting":
                 products_to_forecast
             )
             
+            # Associated Products Forecast Section
+            st.subheader("Associated Products Forecast Analysis")
+            
+            # Create two columns
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                # Product selector for association analysis
+                if st.session_state.product_list is not None:
+                    selected_product = st.selectbox(
+                        "Select a product to see its associations:",
+                        options=products_to_forecast,
+                        help="Select a product to analyze its associated products' forecast"
+                    )
+                    
+                    if selected_product and st.session_state.association_rules is not None:
+                        # Find associated products
+                        rules_df = st.session_state.association_rules
+                        
+                        # Get associated products from rules
+                        associated_products = set()
+                        
+                        for _, row in rules_df.iterrows():
+                            antecedents = list(row['antecedents'])
+                            consequents = list(row['consequents'])
+                            
+                            if selected_product in antecedents:
+                                associated_products.update(consequents)
+                            elif selected_product in consequents:
+                                associated_products.update(antecedents)
+                        
+                        # Remove the selected product itself
+                        if selected_product in associated_products:
+                            associated_products.remove(selected_product)
+                        
+                        # Convert to list and limit to top 5
+                        associated_products = list(associated_products)[:5]
+                        
+                        if associated_products:
+                            st.write(f"Top associated products with {selected_product}:")
+                            
+                            # Create metrics for associated products
+                            metrics_cols = st.columns(min(len(associated_products), 3))
+                            
+                            for i, product in enumerate(associated_products[:3]):
+                                # Get average predicted demand
+                                if product in products_to_forecast:
+                                    product_pred = st.session_state.predictions[
+                                        st.session_state.predictions['ProductID'] == product
+                                    ]
+                                    
+                                    if not product_pred.empty:
+                                        avg_pred = product_pred['Predicted_Quantity'].mean()
+                                        
+                                        # Find rule for this association
+                                        rule_info = "N/A"
+                                        for _, row in rules_df.iterrows():
+                                            ants = list(row['antecedents'])
+                                            cons = list(row['consequents'])
+                                            
+                                            if (selected_product in ants and product in cons) or \
+                                               (selected_product in cons and product in ants):
+                                                rule_info = f"Lift: {row['lift']:.2f}, Conf: {row['confidence']:.2f}"
+                                                break
+                                        
+                                        metrics_cols[i % 3].metric(
+                                            f"Product {product}", 
+                                            f"Avg Demand: {avg_pred:.1f}",
+                                            rule_info
+                                        )
+                        else:
+                            st.info("No significant associations found for this product.")
+                    else:
+                        st.info("Please run association analysis first.")
+            
+            with col2:
+                if selected_product and associated_products:
+                    # Get correlation between selected product and associated products
+                    if st.session_state.preprocessed_data is not None:
+                        data = st.session_state.preprocessed_data
+                        
+                        # Add selected product to list to include in chart
+                        chart_products = [selected_product] + associated_products[:2]  # Limit to 2 associated products for clarity
+                        
+                        # Create aggregated daily data for all products
+                        daily_data = []
+                        
+                        for product in chart_products:
+                            product_data = data[data['ProductID'] == product].copy()
+                            if not product_data.empty:
+                                daily_agg = product_data.groupby('Date')['Quantity'].sum().reset_index()
+                                daily_agg['ProductID'] = product
+                                daily_data.append(daily_agg)
+                        
+                        if daily_data:
+                            combined_data = pd.concat(daily_data)
+                            
+                            # Create a colorful forecast comparison chart
+                            fig = px.line(
+                                combined_data, 
+                                x='Date', 
+                                y='Quantity', 
+                                color='ProductID',
+                                title=f"Sales Comparison: {selected_product} vs Associated Products",
+                                template="plotly_dark"
+                            )
+                            
+                            # Update layout for futuristic look
+                            fig.update_layout(
+                                plot_bgcolor="rgba(25, 25, 40, 0.8)",
+                                paper_bgcolor="rgba(25, 25, 40, 0)",
+                                font=dict(color="white"),
+                                margin=dict(l=20, r=20, t=50, b=20),
+                                height=380
+                            )
+                            
+                            # Add a futuristic glow effect
+                            fig.update_traces(line=dict(width=3))
+                            
+                            st.plotly_chart(fig, use_container_width=True)
+                        else:
+                            st.info("Not enough data for visualization.")
+            
             # Feature importance
             if st.session_state.forecasting_model:
                 st.subheader("Feature Importance")
@@ -1305,7 +1428,29 @@ elif page == "Demand Forecasting":
                         'Importance': model.feature_importances_
                     }).sort_values('Importance', ascending=False)
                     
-                    st.bar_chart(feature_importance.set_index('Feature'))
+                    # Create a colorful bar chart for feature importance
+                    fig = px.bar(
+                        feature_importance.head(15),
+                        x='Importance',
+                        y='Feature',
+                        orientation='h',
+                        title='Feature Importance in Forecasting Model',
+                        color='Importance',
+                        color_continuous_scale='Viridis',
+                        template="plotly_dark"
+                    )
+                    
+                    fig.update_layout(
+                        plot_bgcolor="rgba(25, 25, 40, 0.8)",
+                        paper_bgcolor="rgba(25, 25, 40, 0)",
+                        font=dict(color="white"),
+                        xaxis_title="Importance Score",
+                        yaxis_title="Feature",
+                        margin=dict(l=20, r=20, t=50, b=20),
+                        height=500
+                    )
+                    
+                    st.plotly_chart(fig, use_container_width=True)
 
 # Visualization page
 elif page == "Visualization":
