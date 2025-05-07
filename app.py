@@ -8,6 +8,9 @@ import os
 import pickle
 import time
 import re
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 # Import utility modules
 from utils.data_processing import load_and_preprocess_data, validate_data
@@ -384,12 +387,7 @@ if page == "Home":
     </div>
     """, unsafe_allow_html=True)
     
-    # Create a three-column layout for sample visualizations
     # Create a more colorful, futuristic dashboard with multiple visualizations
-    import plotly.express as px
-    import plotly.graph_objects as go
-    from plotly.subplots import make_subplots
-    import numpy as np
     
     # Generate sample data for visualizations (will be replaced with real data when available)
     dates = pd.date_range(start='2024-01-01', periods=30)
@@ -1224,7 +1222,6 @@ elif page == "Inventory Optimization":
                     top_products = inventory_recommendations.nlargest(10, 'reorder_point')
                     
                     # Create a horizontal bar chart
-                    import plotly.express as px
                     
                     fig = px.bar(
                         top_products,
