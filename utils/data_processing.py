@@ -334,13 +334,17 @@ def add_association_features(daily_sales, association_rules, transaction_data):
                 product_associations[antecedent].append((consequent, confidence))
     
     # For each product, add features based on associated product sales
-    for product_id in df['ProductID'].unique():
+    # Get unique product IDs and dates
+    unique_product_ids = df['ProductID'].unique()
+    unique_dates = df['Date'].unique()
+    
+    for product_id in unique_product_ids:
         if product_id in product_associations:
             # Get associated products
             associated_products = product_associations[product_id]
             
             # For each date
-            for date in df['Date'].unique():
+            for date in unique_dates:
                 # Get associated product sales for this date
                 associated_sales = 0
                 associated_count = 0
