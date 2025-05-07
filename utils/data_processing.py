@@ -117,6 +117,10 @@ def validate_data(data):
         (bool indicating if data is valid, error message if not valid)
     """
     try:
+        # Print data type for debugging
+        print(f"Data type: {type(data)}")
+        print(f"Columns: {data.columns}")
+        
         # Check for required columns
         required_columns = ['Date', 'ProductID', 'Quantity']
         for col in required_columns:
@@ -127,18 +131,44 @@ def validate_data(data):
         if len(data) < 10:
             return False, "Data has fewer than 10 records. More data is needed for meaningful analysis."
         
-        # Check for unique products
-        if len(data['ProductID'].unique()) < 2:
-            return False, "Data needs at least 2 unique products for association analysis."
+        # Safely get unique product IDs
+        try:
+            product_series = data['ProductID']
+            unique_products = product_series.unique()
+            print(f"Unique products: {len(unique_products)}")
+            
+            if len(unique_products) < 2:
+                return False, "Data needs at least 2 unique products for association analysis."
+        except Exception as prod_err:
+            print(f"Error getting unique products: {str(prod_err)}")
+            return False, f"Error processing product data: {str(prod_err)}"
         
-        # Check for unique transactions
-        if len(data['TransactionID'].unique()) < 5:
-            return False, "Data needs at least 5 unique transactions for meaningful analysis."
+        # Safely get unique transactions
+        try:
+            if 'TransactionID' in data.columns:
+                transaction_series = data['TransactionID']
+                unique_transactions = transaction_series.unique()
+                print(f"Unique transactions: {len(unique_transactions)}")
+                
+                if len(unique_transactions) < 5:
+                    return False, "Data needs at least 5 unique transactions for meaningful analysis."
+            else:
+                print("TransactionID column not found")
+                return False, "TransactionID column is required for association analysis."
+        except Exception as trans_err:
+            print(f"Error getting unique transactions: {str(trans_err)}")
+            return False, f"Error processing transaction data: {str(trans_err)}"
         
         # Check for time range
-        date_range = (data['Date'].max() - data['Date'].min()).days
-        if date_range < 7:
-            return False, "Data spans less than 7 days. More historical data is needed for forecasting."
+        try:
+            date_range = (data['Date'].max() - data['Date'].min()).days
+            print(f"Date range: {date_range} days")
+            
+            if date_range < 7:
+                return False, "Data spans less than 7 days. More historical data is needed for forecasting."
+        except Exception as date_err:
+            print(f"Error calculating date range: {str(date_err)}")
+            return False, f"Error processing date data: {str(date_err)}"
         
         # Check data types
         if not pd.api.types.is_datetime64_any_dtype(data['Date']):
@@ -155,6 +185,7 @@ def validate_data(data):
         return True, "Data validation successful."
         
     except Exception as e:
+        print(f"Validation error: {str(e)}")
         return False, f"Validation error: {str(e)}"
 
 def aggregate_daily_sales(data):
