@@ -359,7 +359,11 @@ def plot_product_sales_trend(data, selected_products, time_aggregation='week'):
         xaxis_title=f"{time_aggregation.capitalize()} Date",
         yaxis_title="Sales Quantity",
         legend_title="Product ID",
-        hovermode="x unified"
+        hovermode="x unified",
+        width=900,  # Fixed width for better visualization without needing fullscreen
+        height=600, # Fixed height
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=50, r=50, t=80, b=50)
     )
     
     st.plotly_chart(fig, use_container_width=True)

@@ -339,24 +339,24 @@ if page == "Home":
     col1, col2 = st.columns(2)
     
     with col1:
-        # Sample product association network visualization
+        # Sample product association network visualization using local SVG
         st.markdown("""
         <div class="dashboard-card">
             <h4>Product Association Network</h4>
             <div style="height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
-                <img src="https://raw.githubusercontent.com/plotly/dash-sample-apps/main/apps/dash-network-explorer/assets/sample-network.png" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Sample Network Graph">
+                <img src="assets/images/network_graph.svg" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Sample Network Graph">
             </div>
             <p>Network visualization showing product relationships, with nodes representing products and edges showing co-purchase frequency.</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
-        # Sample demand forecast visualization
+        # Sample demand forecast visualization using local SVG
         st.markdown("""
         <div class="dashboard-card">
             <h4>Demand Forecast Trends</h4>
             <div style="height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
-                <img src="https://raw.githubusercontent.com/plotly/plotly.py/master/img/plotly_js_logo.png" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Sample Forecast Chart">
+                <img src="assets/images/forecast_chart.svg" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Sample Forecast Chart">
             </div>
             <p>Time series forecasts that incorporate both historical sales patterns and product associations for more accurate demand prediction.</p>
         </div>
