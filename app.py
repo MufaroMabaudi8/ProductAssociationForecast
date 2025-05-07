@@ -882,19 +882,17 @@ elif page == "Inventory Optimization":
         with col2:
             service_level = st.select_slider(
                 "Service Level", 
-                options=[0.90, 0.95, 0.98, 0.99],
-                value=0.95,
-                format_func=lambda x: f"{int(x*100)}%",
+                options=[90, 95, 98, 99],
+                value=95,
                 help="Target level of service - higher means less stockouts but more inventory"
             )
         
         with col3:
             holding_cost = st.slider(
-                "Annual Holding Cost", 
+                "Annual Holding Cost (%)", 
                 min_value=10, 
                 max_value=50, 
                 value=25,
-                format_func=lambda x: f"{x}%",
                 help="Annual cost of holding inventory as a percentage of item value"
             )
         
@@ -931,7 +929,7 @@ elif page == "Inventory Optimization":
                     historical_data,
                     forecast_data,
                     lead_time_days=lead_time,
-                    service_level=service_level
+                    service_level=service_level/100
                 )
                 
                 # Display inventory recommendations
@@ -978,7 +976,8 @@ elif page == "Inventory Optimization":
                             historical_data,
                             forecast_data,
                             product_bundles,
-                            lead_time_days=lead_time
+                            lead_time_days=lead_time,
+                            service_level=service_level/100
                         )
                         
                         if not bundle_recommendations.empty:
