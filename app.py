@@ -7,6 +7,7 @@ from datetime import datetime
 import os
 import pickle
 import time
+import re
 
 # Import utility modules
 from utils.data_processing import load_and_preprocess_data, validate_data
@@ -19,6 +20,21 @@ from utils.visualization import (
     plot_product_sales_trend,
     plot_top_rules_table
 )
+from utils.authentication import (
+    initialize_authentication,
+    register_user,
+    authenticate_user,
+    is_authenticated,
+    login_user,
+    logout_user,
+    get_current_user
+)
+from utils.inventory_optimization import (
+    get_inventory_recommendations,
+    get_bundle_inventory_recommendations,
+    calculate_safety_stock,
+    calculate_reorder_points
+)
 
 # Page configuration
 st.set_page_config(
@@ -27,6 +43,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Initialize the authentication system
+initialize_authentication()
 
 # Custom CSS for enhanced UI with modern professional dark theme
 st.markdown("""
@@ -291,13 +310,43 @@ st.markdown("""
 st.markdown("<h1 style='text-align: center;'>Demand Forecasting Based on <span class='gradient-text'>Product Association</span></h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size: 1rem; margin-bottom: 2rem; opacity: 0.8;'>Advanced sales analysis and prediction platform using association rules</p>", unsafe_allow_html=True)
 
-# Styled sidebar
+# User Authentication Display in Sidebar
+if is_authenticated():
+    user = get_current_user()
+    st.sidebar.markdown(f"""
+    <div style="background-color: #1E1E1E; padding: 10px; border-radius: 5px; margin-bottom: 20px; border-left: 3px solid #4B56D2;">
+        <p style="margin: 0; font-size: 0.9rem;">Logged in as:</p>
+        <p style="margin: 0; font-weight: bold; color: #4B56D2;">{user['full_name']}</p>
+        <p style="margin: 0; font-size: 0.8rem; opacity: 0.7;">{user['email']}</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.sidebar.button("Sign Out", key="signout"):
+        logout_user()
+        st.experimental_rerun()
+else:
+    st.sidebar.markdown("""
+    <div style="background-color: #1E1E1E; padding: 10px; border-radius: 5px; margin-bottom: 20px; border-left: 3px solid #FF6B6B;">
+        <p style="margin: 0; font-size: 0.9rem;">Not logged in</p>
+        <p style="margin: 0; font-size: 0.8rem; opacity: 0.7;">Please sign in to access all features</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# Styled sidebar navigation
 st.sidebar.markdown("<h2 style='text-align: center; margin-bottom: 2rem; color: #4B56D2; font-size: 1.3rem;'>Navigation</h2>", unsafe_allow_html=True)
-page = st.sidebar.radio(
-    "Select Section",
-    ["Home", "Data Upload", "Association Analysis", "Demand Forecasting", "Visualization"],
-    label_visibility="collapsed"  # Hide label but maintain accessibility
-)
+
+if is_authenticated():
+    page = st.sidebar.radio(
+        "Select Section",
+        ["Home", "Data Upload", "Association Analysis", "Demand Forecasting", "Inventory Optimization", "Visualization", "User Profile"],
+        label_visibility="collapsed"  # Hide label but maintain accessibility
+    )
+else:
+    page = st.sidebar.radio(
+        "Select Section",
+        ["Home", "Login", "Register"],
+        label_visibility="collapsed"  # Hide label but maintain accessibility
+    )
 
 # Initialize session state for storing data and models
 if "data" not in st.session_state:
@@ -463,6 +512,169 @@ if page == "Home":
             </ul>
         </div>
         """, unsafe_allow_html=True)
+
+# Login page
+elif page == "Login":
+    st.markdown("<h2 style='text-align: center;'>Sign In</h2>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col2:
+        st.markdown("""
+        <div style="background-color: #1E1E1E; padding: 20px; border-radius: 8px; border: 1px solid rgba(75, 86, 210, 0.2); margin-bottom: 20px;">
+            <h4 style="text-align: center; color: #4B56D2; margin-bottom: 20px; font-size: 1.2rem;">Welcome Back</h4>
+            <p style="text-align: center; font-size: 0.9rem; margin-bottom: 20px;">Sign in to access your forecasting dashboard and analytics</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        with st.form("login_form"):
+            email = st.text_input("Email Address", placeholder="your.email@example.com")
+            password = st.text_input("Password", type="password", placeholder="••••••••")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("""
+                <a href="#" onclick="document.getElementById('register_link').click();" style="font-size: 0.8rem;">Need an account? Register</a>
+                <button id="register_link" style="display: none;"></button>
+                """, unsafe_allow_html=True)
+            
+            submit_button = st.form_submit_button(label="Sign In")
+            
+            if submit_button:
+                if not email or not password:
+                    st.error("Please enter your email and password.")
+                else:
+                    with st.spinner("Authenticating..."):
+                        success, user = authenticate_user(email, password)
+                        if success:
+                            login_user(user)
+                            st.success("Login successful!")
+                            time.sleep(1)
+                            st.experimental_rerun()
+                        else:
+                            st.error("Invalid email or password. Please try again.")
+
+# Register page
+elif page == "Register":
+    st.markdown("<h2 style='text-align: center;'>Create Account</h2>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col2:
+        st.markdown("""
+        <div style="background-color: #1E1E1E; padding: 20px; border-radius: 8px; border: 1px solid rgba(75, 86, 210, 0.2); margin-bottom: 20px;">
+            <h4 style="text-align: center; color: #4B56D2; margin-bottom: 20px; font-size: 1.2rem;">Join Our Platform</h4>
+            <p style="text-align: center; font-size: 0.9rem; margin-bottom: 20px;">Create your account to access advanced forecasting tools and analytics</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        with st.form("register_form"):
+            full_name = st.text_input("Full Name", placeholder="John Doe")
+            email = st.text_input("Email Address", placeholder="your.email@example.com")
+            company = st.text_input("Company Name (Optional)", placeholder="Your Company Inc.")
+            password = st.text_input("Password", type="password", placeholder="••••••••")
+            confirm_password = st.text_input("Confirm Password", type="password", placeholder="••••••••")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("""
+                <a href="#" onclick="document.getElementById('login_link').click();" style="font-size: 0.8rem;">Already have an account? Sign in</a>
+                <button id="login_link" style="display: none;"></button>
+                """, unsafe_allow_html=True)
+            
+            submit_button = st.form_submit_button(label="Create Account")
+            
+            if submit_button:
+                # Validate inputs
+                if not full_name or not email or not password:
+                    st.error("Please fill in all required fields.")
+                elif password != confirm_password:
+                    st.error("Passwords do not match.")
+                elif len(password) < 6:
+                    st.error("Password must be at least 6 characters long.")
+                elif not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+                    st.error("Please enter a valid email address.")
+                else:
+                    with st.spinner("Creating your account..."):
+                        success, message = register_user(full_name, email, password, company)
+                        if success:
+                            st.success(message)
+                            st.info("Please sign in with your new account.")
+                            time.sleep(2)
+                            # Redirect to login page
+                            st.session_state.page = "Login"
+                            st.experimental_rerun()
+                        else:
+                            st.error(message)
+
+# User Profile page
+elif page == "User Profile":
+    if not is_authenticated():
+        st.warning("You must be logged in to view this page.")
+        st.stop()
+    
+    user = get_current_user()
+    
+    st.markdown("<h2 style='text-align: center;'>User Profile</h2>", unsafe_allow_html=True)
+    
+    col1, col2 = st.columns([1, 2])
+    
+    with col1:
+        st.markdown(f"""
+        <div style="background-color: #1E1E1E; padding: 20px; border-radius: 8px; border: 1px solid rgba(75, 86, 210, 0.2); margin-bottom: 20px;">
+            <div style="font-size: 60px; color: #4B56D2; text-align: center; margin-bottom: 10px;">👤</div>
+            <h3 style="text-align: center; margin-top: 0;">{user['full_name']}</h3>
+            <p style="text-align: center; font-size: 0.9rem; opacity: 0.7;">{user['email']}</p>
+            {f'<p style="text-align: center; font-size: 0.9rem; color: #4B56D2;">{user["company"]}</p>' if user.get('company') else ''}
+            <p style="text-align: center; font-size: 0.8rem; opacity: 0.5;">Joined: {datetime.fromisoformat(user['created_at']).strftime("%B %d, %Y")}</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        # Update profile section
+        st.subheader("Update Profile")
+        
+        with st.form("update_profile_form"):
+            new_name = st.text_input("Full Name", value=user['full_name'])
+            new_company = st.text_input("Company Name", value=user.get('company', ''))
+            
+            update_profile_button = st.form_submit_button(label="Update Profile")
+            
+            if update_profile_button:
+                success, message = update_profile(user['id'], full_name=new_name, company=new_company)
+                if success:
+                    st.success(message)
+                    # Force refresh of session state
+                    success, updated_user = authenticate_user(user['email'], password=user.get('password_hash'))
+                    if success:
+                        login_user(updated_user)
+                        st.experimental_rerun()
+                else:
+                    st.error(message)
+        
+        # Change password section
+        st.subheader("Change Password")
+        
+        with st.form("change_password_form"):
+            current_password = st.text_input("Current Password", type="password")
+            new_password = st.text_input("New Password", type="password")
+            confirm_new_password = st.text_input("Confirm New Password", type="password")
+            
+            change_password_button = st.form_submit_button(label="Change Password")
+            
+            if change_password_button:
+                if not current_password or not new_password or not confirm_new_password:
+                    st.error("Please fill in all password fields.")
+                elif new_password != confirm_new_password:
+                    st.error("New passwords do not match.")
+                elif len(new_password) < 6:
+                    st.error("New password must be at least 6 characters long.")
+                else:
+                    success, message = change_password(user['id'], current_password, new_password)
+                    if success:
+                        st.success(message)
+                    else:
+                        st.error(message)
 
 # Data Upload page
 elif page == "Data Upload":
@@ -633,6 +845,215 @@ elif page == "Association Analysis":
                 )
             else:
                 st.warning("No association rules found with the current parameters. Try reducing minimum support or confidence.")
+
+# Inventory Optimization page
+elif page == "Inventory Optimization":
+    st.header("Inventory Optimization")
+    
+    if not is_authenticated():
+        st.warning("You must be logged in to access this feature.")
+        st.stop()
+    
+    if st.session_state.preprocessed_data is None:
+        st.warning("No data available. Please upload data first.")
+    elif st.session_state.predictions is None:
+        st.warning("Please run demand forecasting first to generate inventory recommendations.")
+    else:
+        st.markdown("""
+        <div style="background-color: rgba(124, 77, 255, 0.05); padding: 20px; border-radius: 10px; border-left: 4px solid #7C4DFF; margin-bottom: 20px;">
+            <h3 style="color: #7C4DFF; margin-top: 0;">Inventory Optimization</h3>
+            <p>This section uses forecasted demand and historical patterns to recommend optimal inventory levels, 
+            reorder points, and safety stock to minimize stockouts while avoiding excess inventory.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Parameters for inventory calculations
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            lead_time = st.slider(
+                "Lead Time (Days)", 
+                min_value=1, 
+                max_value=30, 
+                value=7,
+                help="Number of days between placing an order and receiving it"
+            )
+        
+        with col2:
+            service_level = st.select_slider(
+                "Service Level", 
+                options=[0.90, 0.95, 0.98, 0.99],
+                value=0.95,
+                format_func=lambda x: f"{int(x*100)}%",
+                help="Target level of service - higher means less stockouts but more inventory"
+            )
+        
+        with col3:
+            holding_cost = st.slider(
+                "Annual Holding Cost", 
+                min_value=10, 
+                max_value=50, 
+                value=25,
+                format_func=lambda x: f"{x}%",
+                help="Annual cost of holding inventory as a percentage of item value"
+            )
+        
+        # Product selection for optimization
+        st.subheader("Select Products for Optimization")
+        
+        all_products = st.session_state.product_list
+        default_selection = all_products[:min(5, len(all_products))]
+        
+        selected_products = st.multiselect(
+            "Choose products to optimize",
+            options=all_products,
+            default=default_selection,
+            help="Select specific products for inventory optimization"
+        )
+        
+        if not selected_products:
+            st.warning("Please select at least one product to optimize.")
+            st.stop()
+        
+        if st.button("Calculate Inventory Recommendations"):
+            with st.spinner("Generating inventory recommendations..."):
+                # Filter data for selected products
+                historical_data = st.session_state.preprocessed_data[
+                    st.session_state.preprocessed_data['ProductID'].isin(selected_products)
+                ]
+                
+                forecast_data = st.session_state.predictions[
+                    st.session_state.predictions['ProductID'].isin(selected_products)
+                ]
+                
+                # Calculate recommendations
+                inventory_recommendations = get_inventory_recommendations(
+                    historical_data,
+                    forecast_data,
+                    lead_time_days=lead_time,
+                    service_level=service_level
+                )
+                
+                # Display inventory recommendations
+                st.subheader("Individual Product Recommendations")
+                
+                # Add some visual improvements to the dataframe
+                def highlight_reorder_point(val):
+                    """Highlight reorder point values"""
+                    return f'background-color: rgba(124, 77, 255, 0.1)' if val.name == 'reorder_point' else ''
+                
+                styled_recommendations = inventory_recommendations.style.apply(highlight_reorder_point)
+                
+                # Round numeric columns
+                numeric_cols = ['avg_daily_demand', 'demand_std_dev', 'safety_stock', 
+                                'lead_time_demand', 'reorder_point', 'eoq', 'days_of_supply']
+                
+                for col in numeric_cols:
+                    if col in inventory_recommendations.columns:
+                        inventory_recommendations[col] = inventory_recommendations[col].round(2)
+                
+                st.dataframe(inventory_recommendations)
+                
+                # Calculate bundle recommendations if association rules exist
+                if st.session_state.association_rules is not None and not st.session_state.association_rules.empty:
+                    st.subheader("Product Bundle Recommendations")
+                    
+                    # Get product bundles from association rules
+                    rules = st.session_state.association_rules
+                    if 'antecedents' in rules.columns and 'consequents' in rules.columns:
+                        # Extract product bundles
+                        product_bundles = []
+                        for _, row in rules.iterrows():
+                            antecedents = list(row['antecedents'])
+                            consequents = list(row['consequents'])
+                            bundle_items = antecedents + consequents
+                            confidence = row['confidence']
+                            lift = row['lift']
+                            
+                            if len(bundle_items) >= 2:  # Only consider bundles with at least 2 items
+                                product_bundles.append((bundle_items, confidence, lift))
+                        
+                        # Get bundle recommendations
+                        bundle_recommendations = get_bundle_inventory_recommendations(
+                            historical_data,
+                            forecast_data,
+                            product_bundles,
+                            lead_time_days=lead_time
+                        )
+                        
+                        if not bundle_recommendations.empty:
+                            # Round numeric columns
+                            numeric_cols = ['confidence', 'lift', 'avg_safety_stock', 
+                                          'avg_reorder_point', 'min_days_supply', 'suggested_bundle_stock']
+                            
+                            for col in numeric_cols:
+                                if col in bundle_recommendations.columns:
+                                    bundle_recommendations[col] = bundle_recommendations[col].round(2)
+                            
+                            st.dataframe(bundle_recommendations)
+                        else:
+                            st.info("No significant product bundles found for inventory optimization.")
+                
+                # Show inventory insights
+                st.subheader("Inventory Insights")
+                
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown("""
+                    <div class="card">
+                        <h4 style="color: #7C4DFF; margin-top: 0;">Reorder Points</h4>
+                        <p>Products should be reordered when inventory reaches these levels to prevent stockouts during lead time.</p>
+                        <ul>
+                            <li>Higher service levels require higher reorder points</li>
+                            <li>Products with variable demand need more safety stock</li>
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                with col2:
+                    st.markdown("""
+                    <div class="card">
+                        <h4 style="color: #7C4DFF; margin-top: 0;">Economic Order Quantities</h4>
+                        <p>These are the optimal order quantities that balance ordering costs against inventory holding costs.</p>
+                        <ul>
+                            <li>Frequent small orders = higher ordering costs</li>
+                            <li>Large infrequent orders = higher holding costs</li>
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                # Data visualization for inventory
+                st.subheader("Inventory Visualization")
+                
+                # Create a bar chart of reorder points
+                if not inventory_recommendations.empty:
+                    # Get top 10 products by reorder point
+                    top_products = inventory_recommendations.nlargest(10, 'reorder_point')
+                    
+                    # Create a horizontal bar chart
+                    import plotly.express as px
+                    
+                    fig = px.bar(
+                        top_products,
+                        x='reorder_point',
+                        y='ProductID',
+                        orientation='h',
+                        labels={'reorder_point': 'Reorder Point', 'ProductID': 'Product'},
+                        title='Top Products by Reorder Point',
+                        color='reorder_point',
+                        color_continuous_scale='Viridis'
+                    )
+                    
+                    fig.update_layout(
+                        height=500,
+                        width=800,
+                        xaxis_title="Quantity",
+                        yaxis_title="Product ID",
+                        margin=dict(l=50, r=50, t=80, b=50)
+                    )
+                    
+                    st.plotly_chart(fig)
 
 # Demand Forecasting page
 elif page == "Demand Forecasting":
