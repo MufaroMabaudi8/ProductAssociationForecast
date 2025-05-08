@@ -47,24 +47,28 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Hide the default Streamlit footer and add our own copyright
+# Create a more prominent custom footer and hide the default Streamlit footer
 hide_streamlit_style = """
 <style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    footer:after {
-        content:'© 2025 Mufaro Mabaudi - All Rights Reserved'; 
-        visibility: visible;
-        display: block;
-        position: relative;
-        padding: 15px;
-        text-align: center;
-        font-size: 0.8rem;
-        color: rgba(180, 180, 200, 0.8);
-    }
 </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+# Add custom footer at the bottom of the main content
+def add_footer():
+    footer = """
+    <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #1A1A1A; 
+         padding: 10px; text-align: center; border-top: 1px solid rgba(75, 86, 210, 0.2); z-index: 1000;">
+        <p style="margin: 0; color: rgba(180, 180, 200, 0.8); font-size: 0.8rem;">
+            © 2025 Mufaro Mabaudi - All Rights Reserved
+        </p>
+    </div>
+    """
+    st.markdown(footer, unsafe_allow_html=True)
+
+# We'll call this function at the end of the script
 
 # Initialize the authentication system
 initialize_authentication()
@@ -1984,13 +1988,5 @@ elif page == "Reports":
         else:
             st.info("Run forecasting first to generate inventory planning report.")
 
-# Add footer
-st.markdown("---")
-st.markdown(
-    """
-    <div style="text-align: center">
-        <p>Demand Forecasting Application | Created with Streamlit</p>
-    </div>
-    """, 
-    unsafe_allow_html=True
-)
+# Add custom footer
+add_footer()
