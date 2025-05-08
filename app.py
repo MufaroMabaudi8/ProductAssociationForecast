@@ -56,11 +56,11 @@ hide_streamlit_style = """
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# Add custom footer at the bottom of the main content
+# Add custom footer at the bottom of the main content (not fixed position)
 def add_footer():
     footer = """
-    <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #1A1A1A; 
-         padding: 10px; text-align: center; border-top: 1px solid rgba(75, 86, 210, 0.2); z-index: 1000;">
+    <div style="width: 100%; margin-top: 50px; padding: 10px; text-align: center; 
+         border-top: 1px solid rgba(75, 86, 210, 0.2);">
         <p style="margin: 0; color: rgba(180, 180, 200, 0.8); font-size: 0.8rem;">
             © 2025 Mufaro Mabaudi - All Rights Reserved
         </p>
