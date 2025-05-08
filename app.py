@@ -47,6 +47,25 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Hide the default Streamlit footer and add our own copyright
+hide_streamlit_style = """
+<style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    footer:after {
+        content:'© 2025 Mufaro Mabaudi - All Rights Reserved'; 
+        visibility: visible;
+        display: block;
+        position: relative;
+        padding: 15px;
+        text-align: center;
+        font-size: 0.8rem;
+        color: rgba(180, 180, 200, 0.8);
+    }
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # Initialize the authentication system
 initialize_authentication()
 
