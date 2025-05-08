@@ -1,8 +1,23 @@
 @echo off
-echo Starting Demand Forecasting Application...
+echo ======================================================================
+echo Demand Forecasting Application - 100%% Offline Mode for Windows
+echo ======================================================================
 echo.
-echo The application will be available at: http://localhost:8501
-echo Press Ctrl+C to stop the application
-echo.
+echo Looking for available port...
 
-streamlit run app.py --server.port 8501 --server.address localhost --server.enableCORS false --server.enableXsrfProtection false
+REM Use Python to run our app with enhanced error handling
+python run.py
+
+echo.
+if errorlevel 1 (
+    echo Application exited with errors
+    echo If you're having trouble, try these troubleshooting steps:
+    echo   1. Make sure streamlit is installed: pip install streamlit
+    echo   2. Make sure all dependencies are installed: pip install -r requirements_local.txt
+    echo   3. Check if another application is using the port
+    echo   4. Try manually running: streamlit run app.py --server.address 127.0.0.1
+    echo.
+    pause
+) else (
+    echo Application closed successfully
+)

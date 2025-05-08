@@ -1,7 +1,9 @@
 [server]
 headless = true
-address = "0.0.0.0"
+address = "127.0.0.1"
 port = 5000
+enableCORS = false
+enableXsrfProtection = false
 
 [theme]
 primaryColor = "#4B56D2"
